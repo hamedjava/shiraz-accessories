@@ -1,18 +1,4 @@
-import mongoose from "mongoose";
-
-// تعریف اسکیمای ادمین
-const adminSchema = new mongoose.Schema(
-  {
-    name: { type: String },
-    email: { type: String, unique: true, sparse: true },
-    password: { type: String },
-    mobile: { type: String, unique: true, sparse: true },
-    otpCode: { type: String },
-  },
-  { timestamps: true }
-);
-
-const AdminModel = mongoose.model("Admin", adminSchema);
+import { AdminModel } from "../models/adminModel.js";
 
 export const adminRepository = {
   async findByEmail(email) {
@@ -24,11 +10,12 @@ export const adminRepository = {
   },
 
   async findAll() {
-    return await AdminModel.find();
+    // حذف فیلدهای حساس از خروجی برای امنیت
+    return await AdminModel.find({}, "-password -otpCode -otpExpireAt -otpRequestCount");
   },
 
-  async create(adminData) {
-    const admin = new AdminModel(adminData);
+  async create(data) {
+    const admin = new AdminModel(data);
     return await admin.save();
   },
 
@@ -40,7 +27,17 @@ export const adminRepository = {
     return await AdminModel.findByIdAndDelete(id);
   },
 
-  async updateOtp(mobile, otpCode) {
-    return await AdminModel.findOneAndUpdate({ mobile }, { otpCode }, { new: true });
+  // ✅ متد به‌روزرسانی اطلاعات OTP
+  async updateOtp(mobile, otpCode, otpExpireAt) {
+    return await AdminModel.findOneAndUpdate(
+      { mobile },
+      {
+        otpCode,
+        otpExpireAt,
+        otpLastRequestAt: new Date(),
+        $inc: { otpRequestCount: 1 },
+      },
+      { new: true }
+    );
   },
 };

@@ -2,120 +2,201 @@ import {
   createAdmin,
   adminLogin,
   sendAdminOtp,
+  verifyAdminOtp,
   getAllAdmins,
   updateAdmin,
   deleteAdmin,
 } from "../../application/services/adminService.js";
 
+/**
+ * Controller Layer برای ادمین‌ها
+ */
+
 /* ===========================
-   👤 ثبت‌نام ادمین جدید
+   👤 ثبت‌نام ادمین (ایمیلی یا موبایلی)
 =========================== */
 export async function register(req, res, next) {
   try {
-    const result = await createAdmin(req.body);
-    res.status(201).json({
-      success: true,
-      message: "ثبت‌نام ادمین با موفقیت انجام شد.",
-      data: result,
+    const { name, email, password, mobile, role } = req.body;
+
+    // حالت ایمیلی با موبایل الزامی
+    if (email && password) {
+      if (!mobile) {
+        return res.status(400).json({
+          success: false,
+          message: "شماره موبایل برای ثبت‌نام ایمیلی الزامی است.",
+        });
+      }
+
+      const result = await createAdmin({
+        name,
+        email,
+        password,
+        mobile,
+        role: role || "manager",
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "ثبت‌نام ایمیلی با موفقیت انجام شد.",
+        data: result,
+      });
+    }
+
+    // حالت موبایلی
+    if (mobile && !email && !password) {
+      const result = await createAdmin({
+        name,
+        mobile,
+        email: null,
+        password: null,
+        role: role || "support",
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "ثبت‌نام موبایلی با موفقیت انجام شد.",
+        data: result,
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: "درخواست ثبت‌نام نامعتبر است.",
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }
 
 /* ===========================
-   🔐 ورود با موبایل و OTP
-=========================== */
-export async function login(req, res, next) {
-  try {
-    const { mobile, otpCode } = req.body;
-    const result = await adminLogin({ mobile, otpCode });
-    res.status(200).json({
-      success: true,
-      message: "ورود موفقیت‌آمیز.",
-      data: result,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
-/* ===========================
-   📲 ارسال کد OTP برای شماره موبایل
+   📱 ارسال کد OTP
 =========================== */
 export async function sendOtp(req, res, next) {
   try {
     const { mobile } = req.body;
+    if (!mobile)
+      return res.status(400).json({
+        success: false,
+        message: "شماره موبایل الزامی است.",
+      });
+
     const result = await sendAdminOtp(mobile);
     res.status(200).json({
       success: true,
-      message: "کد OTP با موفقیت ارسال شد.",
+      message: "کد OTP ارسال شد.",
       data: result,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }
 
 /* ===========================
-   📋 دریافت لیست همه ادمین‌ها
+   ✅ تأیید OTP موبایل
+=========================== */
+export async function verifyOtp(req, res, next) {
+  try {
+    const { mobile, otpCode } = req.body;
+    if (!mobile || !otpCode)
+      return res.status(400).json({
+        success: false,
+        message: "موبایل و کد OTP الزامی است.",
+      });
+
+    const result = await verifyAdminOtp(req.body);
+    res.status(200).json({
+      success: true,
+      message: "شماره موبایل با موفقیت تأیید شد.",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/* ===========================
+   🔓 ورود با موبایل و OTP
+=========================== */
+export async function login(req, res, next) {
+  try {
+    const { mobile, otpCode } = req.body;
+    if (!mobile || !otpCode)
+      return res.status(400).json({
+        success: false,
+        message: "شماره موبایل و کد OTP الزامی است.",
+      });
+
+    const result = await adminLogin(req.body);
+    res.status(200).json({
+      success: true,
+      message: "ورود با موفقیت انجام شد.",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/* ===========================
+   📋 دریافت لیست همه‌ی ادمین‌ها
 =========================== */
 export async function getAll(req, res, next) {
   try {
     const result = await getAllAdmins();
+
+    const safeData = result.map(admin => ({
+      id: admin._id,
+      name: admin.name,
+      email: admin.email,
+      role: admin.role,
+      mobile: admin.mobile,
+      mobileVerified: admin.mobileVerified,
+      createdAt: admin.createdAt,
+    }));
+
     res.status(200).json({
       success: true,
-      count: result.length,
-      data: result,
+      message: "لیست ادمین‌ها دریافت شد.",
+      data: safeData,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }
 
 /* ===========================
-   ✏️ بروزرسانی اطلاعات یک ادمین
+   ✏️ بروزرسانی ادمین
 =========================== */
 export async function update(req, res, next) {
   try {
     const { id } = req.params;
+
     const result = await updateAdmin(id, req.body);
-
-    if (!result)
-      return res.status(404).json({
-        success: false,
-        message: "ادمین یافت نشد.",
-      });
-
     res.status(200).json({
       success: true,
-      message: "اطلاعات ادمین بروزرسانی شد.",
+      message: "ادمین به‌روزرسانی شد.",
       data: result,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }
 
 /* ===========================
-   🗑️ حذف ادمین
+   🗑️ حذف ادمین (فقط سوپرادمین)
 =========================== */
 export async function remove(req, res, next) {
   try {
     const { id } = req.params;
+
     const deleted = await deleteAdmin(id);
-
-    if (!deleted)
-      return res.status(404).json({
-        success: false,
-        message: "ادمین یافت نشد.",
-      });
-
     res.status(200).json({
       success: true,
-      message: "ادمین با موفقیت حذف شد.",
+      message: "ادمین حذف شد.",
+      data: deleted,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

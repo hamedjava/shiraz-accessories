@@ -2,7 +2,7 @@ import { adminUsecases } from "../../domain/usecases/adminUsecases.js";
 import { adminRepository } from "../../infrastructure/repositories/adminRepository.js";
 
 /**
- * 🧠 سرویس سطح اپلیکیشن برای ادمین
+ * 🎯 سرویس اپلیکیشن برای ادمین‌ها
  */
 export async function createAdmin(data) {
   return await adminUsecases.registerAdmin(data);
@@ -14,6 +14,10 @@ export async function adminLogin(credentials) {
 
 export async function sendAdminOtp(mobile) {
   return await adminUsecases.sendOtp(mobile);
+}
+
+export async function verifyAdminOtp(data) {
+  return await adminUsecases.verifyOtp(data);
 }
 
 export async function getAllAdmins() {
