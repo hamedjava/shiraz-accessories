@@ -1,4 +1,35 @@
+# Dependencies
 node_modules/
+
+# Environment variables
 .env
-coverage/
+.env.local
+.env.production
+
+# Logs
 logs/
+*.log
+
+# Coverage reports
+coverage/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# IDE settings
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Temporary files
+tmp/

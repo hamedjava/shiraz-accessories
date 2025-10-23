@@ -1,25 +1,140 @@
-import express from "express";
-import helmet from "helmet";
-import cors from "cors";
-import morgan from "morgan";
-import rateLimit from "express-rate-limit";
-import { errorHandler } from "./core/middlewares/errorHandler.js";
-import adminRoutes from "./modules/user/admin/interfaces/http/adminRoutes.js";
+// /**
+//  * ------------------------------------------
+//  * فایل اصلی راه‌اندازی برنامه Express
+//  * مدیریت امنیت، محدودیت درخواست، ثبت لاگ، و Mount کردن ماژول‌های مختلف
+//  * ------------------------------------------
+//  */
 
+// import express from "express";
+// import helmet from "helmet";                 // افزایش امنیت Headerها
+// import cors from "cors";                     // اجازه به درخواست‌های Cross-Origin
+// import morgan from "morgan";                 // ثبت لاگ درخواست‌ها در حالت dev
+// import rateLimit from "express-rate-limit";  // محدودیت تعداد درخواست در بازه زمانی
+
+// // هندلر عمومی خطاها (Global Error Handler)
+// import { errorHandler } from "./core/middlewares/errorHandler.js";
+
+// // ماژول‌های سیستم (Case-sensitive برای لینوکس)
+// import adminRoutes from "./modules/user/admin/interfaces/http/adminRoutes.js";
+// import sellerRoutes from "./modules/user/seller/interfaces/http/seller-routes.js";
+
+// // ایجاد اپلیکیشن اصلی
+// const app = express();
+
+// /* ===========================
+//    📘 لایه امنیت و تنظیمات عمومی
+// =========================== */
+
+// app.use(helmet());          // جلوگیری از حملات رایج (XSS, clickjacking, ...)
+// app.use(cors());            // به‌صورت پیش‌فرض همه Origin‌ها مجازند → می‌تونی محدودش کنی
+// app.use(express.json());    // parse بدنه درخواست (JSON)
+// app.use(morgan("dev"));     // لاگ خوانا برای محیط توسعه
+
+// // محدودیت سرعت درخواست‌ها برای جلوگیری از حمله DoS
+// app.use(
+//   rateLimit({
+//     windowMs: 60 * 1000,    // بازه ۱ دقیقه‌ای
+//     max: 60,                // حداکثر ۶۰ درخواست در هر دقیقه
+//     message: "تعداد درخواست‌های شما بیش از حد مجاز است.",
+//   })
+// );
+
+// /* ===========================
+//    ✅ مسیر تست وضعیت API
+// =========================== */
+// app.get("/api", (req, res) => {
+//   res.status(200).json({ message: "✅ API فعال است" });
+// });
+
+// /* ===========================
+//    📦 Mount کردن ماژول‌ها
+// =========================== */
+
+// // مسیر مدیران (Admins)
+// app.use("/api/admins", adminRoutes);
+
+// // مسیر فروشندگان (Sellers)
+// app.use("/api/seller", sellerRoutes);
+
+// /* ===========================
+//    ⚠️ هندلر نهایی خطاها
+// =========================== */
+// app.use(errorHandler);
+
+// export default app;
+/**
+ * ------------------------------------------
+ * فایل اصلی راه‌اندازی برنامه Express
+ * مدیریت امنیت، محدودیت درخواست، ثبت لاگ، و Mount کردن ماژول‌های مختلف
+ * ------------------------------------------
+ */
+
+import express from "express";
+import helmet from "helmet";                 // افزایش امنیت Headerها
+import cors from "cors";                     // اجازه به درخواست‌های Cross-Origin
+import morgan from "morgan";                 // ثبت لاگ درخواست‌ها در حالت dev
+import rateLimit from "express-rate-limit";  // محدودیت تعداد درخواست در بازه زمانی
+
+// هندلر عمومی خطاها (Global Error Handler)
+import { errorHandler } from "./core/middlewares/errorHandler.js";
+
+// ماژول‌های سیستم (Case-sensitive برای لینوکس)
+import adminRoutes from "./modules/user/admin/interfaces/http/adminRoutes.js";
+import sellerRoutes from "./modules/user/seller/interfaces/http/seller-routes.js";
+
+// ایجاد اپلیکیشن اصلی
 const app = express();
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(rateLimit({ windowMs: 60 * 1000, max: 60 }));
+/* ===========================
+   📘 لایه امنیت و تنظیمات عمومی
+=========================== */
 
+// تنظیمات پیشرفته‌ی Helmet برای توسعه و production
+app.use(
+  helmet({
+    contentSecurityPolicy: false,              // غیرفعال کردن CSP (در توسعه باعث تداخل SPA می‌شود)
+    crossOriginResourcePolicy: { policy: "same-origin" }, // محدود کردن دسترسی منابع برای افزایش امنیت
+  })
+);
+
+// فعال‌سازی CORS پس از Helmet
+app.use(cors());
+
+// فعال‌سازی JSON parser
+app.use(express.json());
+
+// فعال‌سازی لاگ درخواست‌ها (در حالت dev)
+app.use(morgan("dev"));
+
+// محدودیت تعداد درخواست‌ برای جلوگیری از حملات brute-force و DoS
+app.use(
+  rateLimit({
+    windowMs: 60 * 1000, // بازه زمانی یک دقیقه
+    max: 60, // حداکثر ۶۰ درخواست در هر دقیقه
+    message: "تعداد درخواست‌های شما بیش از حد مجاز است.",
+  })
+);
+
+/* ===========================
+   ✅ مسیر تست وضعیت API
+=========================== */
 app.get("/api", (req, res) => {
-  res.json({ message: "✅ API فعال است" });
+  res.status(200).json({ message: "✅ API فعال است" });
 });
 
+/* ===========================
+   📦 Mount کردن ماژول‌ها
+=========================== */
+
+// مسیر مدیران (Admins)
 app.use("/api/admins", adminRoutes);
 
+// مسیر فروشندگان (Sellers)
+app.use("/api/seller", sellerRoutes);
+
+/* ===========================
+   ⚠️ هندلر نهایی خطاها
+=========================== */
 app.use(errorHandler);
 
 export default app;

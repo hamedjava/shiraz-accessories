@@ -40,4 +40,39 @@ export const adminRepository = {
       { new: true }
     );
   },
+    /** 👤 افزودن Session جدید */
+    async addSession(adminId, token, sessionId) {
+      return await AdminModel.findByIdAndUpdate(
+        adminId,
+        {
+          $push: { refreshTokens: token },
+          currentSessionId: sessionId,
+          lastLoginAt: new Date(),
+        },
+        { new: true }
+      );
+    },
+  
+    /** ⛔ خروج از Session */
+    async removeSession(adminId, token) {
+      return await AdminModel.findByIdAndUpdate(
+        adminId,
+        {
+          $pull: { refreshTokens: token },
+          currentSessionId: null,
+        },
+        { new: true }
+      );
+    },
+  
+    /** 📋 دریافت تمام Session‌ها */
+    async getSessions(adminId) {
+      const admin = await AdminModel.findById(adminId).select("refreshTokens currentSessionId lastLoginAt");
+      return admin ? admin.refreshTokens : [];
+    },
+
+     /** 🔍 یافتن ادمین با شناسه */
+  async findById(adminId) {
+    return await AdminModel.findById(adminId);
+  },
 };
