@@ -11,7 +11,7 @@ import {
   remove,
   getAllSellers,
   verifySeller,
-} from "../controllers/admin-controller.js"; // مسیر باید با ساختار پروژه‌ات همخوانی داشته باشه
+} from "../../../admin/interfaces/controllers/adminController.js"; // مسیر باید با ساختار پروژه‌ات همخوانی داشته باشه
 import { checkRole } from "../../../../../core/middlewares/roleMiddleware.js";
 
 const router = express.Router();
