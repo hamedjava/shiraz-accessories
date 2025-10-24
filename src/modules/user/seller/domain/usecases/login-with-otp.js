@@ -1,43 +1,30 @@
-/**
- * مسیر: seller/domain/usecases/login-with-otp.js
- * وظیفه: ورود فروشنده با موبایل و کد OTP
- */
+// ❌ این خط را حذف کن:
+// import { OTPService } from "../../../seller/infrastructure/Security/otp-service.js";
 
-import { OTPService } from "../../../../user/seller/infrastructure/Security/otp-service.js";
+// ✅ فقط import های زیر را نگه دار:
 import { TokenManager } from "../../../seller/infrastructure/Security/token-manager.js";
 
 export class LoginWithOTPUseCase {
-  constructor(repository) {
+  constructor(repository, otpService, tokenManager) {
     this.repository = repository;
-    this.otpService = new OTPService();
-    this.tokenManager = new TokenManager();
+    this.otpService = otpService;
+    this.tokenManager = tokenManager;
   }
 
-  /** 📲 مرحله اول: ارسال کد OTP */
   async sendCode(mobile) {
     if (!mobile) throw new Error("شماره موبایل الزامی است.");
-
     const seller = await this.repository.findByMobile(mobile);
     if (!seller) throw new Error("فروشنده‌ای با این شماره یافت نشد.");
-
     if (seller.role !== "seller" || !seller.isVerified)
-      throw new Error("فروشنده هنوز توسط ادمین تأیید نشده است.");
-
-    // ✅ تولید و ارسال OTP
+      throw new Error("فروشنده هنوز توسط مدیر تأیید نشده است.");
     const code = this.otpService.generateOTP(mobile);
-
     return {
       success: true,
       message: "کد OTP ارسال شد.",
-      data: {
-        mobile,
-        otpSent: true,
-        ...(process.env.NODE_ENV === "development" && { code }),
-      },
+      data: { mobile, otpSent: true, ...(process.env.NODE_ENV === "development" && { code }) },
     };
   }
 
-  /** ✅ مرحله دوم: تأیید کد OTP و صدور توکن‌ها */
   async verifyCode({ mobile, otpCode }) {
     if (!mobile || !otpCode)
       throw new Error("شماره موبایل و کد OTP باید ارسال شوند.");
@@ -48,30 +35,15 @@ export class LoginWithOTPUseCase {
     const seller = await this.repository.findByMobile(mobile);
     if (!seller) throw new Error("فروشنده یافت نشد.");
 
-    if (seller.role !== "seller" || !seller.isVerified)
-      throw new Error("فروشنده هنوز توسط ادمین تأیید نشده است.");
-
-    const payload = {
-      id: seller.id,
-      role: seller.role,
-      mobile: seller.mobile,
-    };
+    const payload = { id: seller._id.toString(), role: seller.role, mobile: seller.mobile };
     const tokens = this.tokenManager.generateTokens(payload);
+    await this.repository.addSession(seller._id, tokens.refreshToken);
 
-    await this.repository.addRefreshToken(seller.id, tokens.refreshToken);
-
-    // ✅ خروجی استاندارد
     return {
       success: true,
       message: "ورود OTP با موفقیت انجام شد.",
       data: {
-        seller: {
-          id: seller.id,
-          name: seller.name,
-          mobile: seller.mobile,
-          storeName: seller.storeName,
-          role: seller.role,
-        },
+        seller: seller.toJSON(),
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
       },

@@ -1,8 +1,5 @@
-/**
- * وظیفه: بررسی JWT و استخراج اطلاعات Seller.
- */
-
 import { TokenManager } from "../../../seller/infrastructure/Security/token-manager.js";
+
 const tokenManager = new TokenManager();
 
 export const AuthMiddleware = (req, res, next) => {
@@ -15,7 +12,7 @@ export const AuthMiddleware = (req, res, next) => {
 
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ success: false, message: "احراز هویت نامعتبر." });
   }
 };
