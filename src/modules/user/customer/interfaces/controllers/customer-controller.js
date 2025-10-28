@@ -1,82 +1,80 @@
 // interfaces/controllers/customer-controller.js
-import { customerServiceInstance } from "../../application/services/customer-service.js";
+
+import { CustomerService } from "../../application/services/customer-service.js";
+const service = new CustomerService();
 
 export class CustomerController {
-  async registerMobile(req, res) {
-    try {
-      const { mobile, name } = req.body;
-      const result = await customerServiceInstance.registerWithMobile(mobile, name);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
-  }
-
+  /* ------------- Registration ------------- */
   async registerEmail(req, res) {
     try {
-      const { email, password, name } = req.body;
-      const result = await customerServiceInstance.registerWithEmail(email, password, name);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const { name, email, password } = req.body;
+      const user = await service.registerEmailPassword(name, email, password);
+      res.status(201).json(user);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 
-  async loginMobileOtp(req, res) {
+  async registerMobile(req, res) {
     try {
-      const { mobile, otpCode } = req.body;
-      const result = await customerServiceInstance.loginWithMobileOtp(mobile, otpCode);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const { name, mobile, password } = req.body;
+      const user = await service.registerMobilePassword(name, mobile, password);
+      res.status(201).json(user);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 
-  async loginEmailPassword(req, res) {
+  /* ------------- OTP Login ------------- */
+  async requestOtp(req, res) {
     try {
-      const { email, password } = req.body;
-      const result = await customerServiceInstance.loginWithEmailPassword(email, password);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const otp = await service.requestOtp(req.body.mobile);
+      res.json({ message: "OTP ارسال شد", otp });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 
-  async profile(req, res) {
+  async loginOtp(req, res) {
     try {
-      const result = await customerServiceInstance.getProfile(req.user.id);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const { mobile, otp } = req.body;
+      const data = await service.loginMobileOtp(mobile, otp);
+      res.json(data);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 
-  async updateProfile(req, res) {
+  /* ------------- Token Refresh ------------- */
+  async refreshSession(req, res) {
     try {
-      if (req.user.id !== req.body.id) return res.status(403).json({ success: false, message: "دسترسی ندارید." });
-      const result = await customerServiceInstance.updateProfile(req.user.id, req.body);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const { refreshToken } = req.body;
+      const tokens = await service.refreshSession(refreshToken);
+      res.json(tokens);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 
-  async getAll(req, res) {
-    try {
-      const result = await customerServiceInstance.getAllCustomers();
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
-  }
-
-  async getOne(req, res) {
-    try {
-      const result = await customerServiceInstance.getCustomer(req.params.id);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
-  }
-
-  async deleteOne(req, res) {
-    try {
-      const result = await customerServiceInstance.deleteCustomer(req.params.id);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
-  }
-
+  /* ------------- Logout ------------- */
   async logout(req, res) {
     try {
       const { refreshToken } = req.body;
-      const result = await customerServiceInstance.logout(req.user.id, refreshToken);
-      res.status(200).json(result);
-    } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+      const result = await service.logoutSingle(req.user.id, refreshToken);
+      res.json(result);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  async logoutAll(req, res) {
+    try {
+      const result = await service.logoutAll(req.user.id);
+      res.json(result);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   }
 }
 
-export const customerControllerInstance = new CustomerController();
+export const customerController = new CustomerController();

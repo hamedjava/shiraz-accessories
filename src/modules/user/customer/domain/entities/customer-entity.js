@@ -1,20 +1,56 @@
-// domain/entities/customer.js
+// domain/entities/customer-entity.js
+
 export class Customer {
-    constructor({ id, name, mobile, email, password, isVerified, roles, refreshToken, createdAt }) {
+    constructor({
+      id,
+      name,
+      email,
+      mobile,
+      password,
+      roles = ["customer"],
+      isVerified = false,
+      isBlocked = false,
+      refreshTokens = []
+    }) {
       this.id = id;
-      this.name = name ?? "";
-      this.mobile = mobile ?? null;
-      this.email = email ?? null;
-      this.password = password ?? null;
-      this.isVerified = isVerified ?? false;
-      this.roles = roles ?? ["customer"];
-      this.refreshToken = refreshToken ?? null;
-      this.createdAt = createdAt ?? new Date();
+      this.name = name;
+      this.email = email;
+      this.mobile = mobile;
+      this.password = password;
+      this.roles = roles;
+      this.isVerified = isVerified;
+      this.isBlocked = isBlocked;
+      this.refreshTokens = refreshTokens;
     }
   
-    verify() { this.isVerified = true; }
-    setRefreshToken(token) { this.refreshToken = token; }
-    revokeToken() { this.refreshToken = null; }
-    isAdmin() { return this.roles.includes("admin"); }
+    verify() {
+      this.isVerified = true;
+    }
+  
+    block() {
+      this.isBlocked = true;
+    }
+  
+    unblock() {
+      this.isBlocked = false;
+    }
+  
+    addRefreshToken(token) {
+      if (!this.refreshTokens) this.refreshTokens = [];
+      this.refreshTokens.push(token);
+    }
+  
+    removeRefreshToken(tokenValue) {
+      if (!Array.isArray(this.refreshTokens)) return;
+      this.refreshTokens = this.refreshTokens.filter(rt => {
+        if (typeof rt === "string") return rt !== tokenValue;
+        if (typeof rt === "object" && rt.token) return rt.token !== tokenValue;
+        return true;
+      });
+    }
+  
+    clearAllRefreshTokens() {
+      this.refreshTokens = [];
+    }
   }
   

@@ -1,22 +1,23 @@
 // interfaces/http/customer-routes.js
 import express from "express";
-import { customerControllerInstance } from "../../../customer/interfaces/controllers/customer-controller.js";
-import { authMiddleware } from "../../../customer/interfaces/middlewares/auth-middleware.js";
-import { accessControl } from "../../../customer/interfaces/middlewares/access-control-middleware.js";
+import { customerController } from "../controllers/customer-controller.js";
+import { authMiddleware } from "../middlewares/auth-middleware.js";
 
 const router = express.Router();
 
-router.post("/register/mobile", customerControllerInstance.registerMobile);
-router.post("/register/email", customerControllerInstance.registerEmail);
-router.post("/login/mobile-otp", customerControllerInstance.loginMobileOtp);
-router.post("/login/email-password", customerControllerInstance.loginEmailPassword);
+/* ---------- Auth & Registration ---------- */
+router.post("/register/email", customerController.registerEmail);
+router.post("/register/mobile", customerController.registerMobile);
 
-router.get("/profile", authMiddleware, accessControl(["customer", "admin"]), customerControllerInstance.profile);
-router.put("/profile", authMiddleware, accessControl(["customer"]), customerControllerInstance.updateProfile);
+/* ---------- OTP Based Login ---------- */
+router.post("/login/otp/request", customerController.requestOtp);
+router.post("/login/otp/verify", customerController.loginOtp);
 
-router.post("/logout", authMiddleware, customerControllerInstance.logout);
-router.get("/", authMiddleware, accessControl(["admin"]), customerControllerInstance.getAll);
-router.get("/:id", authMiddleware, accessControl(["admin"]), customerControllerInstance.getOne);
-router.delete("/:id", authMiddleware, accessControl(["admin"]), customerControllerInstance.deleteOne);
+/* ---------- Token Refresh ---------- */
+router.post("/session/refresh", customerController.refreshSession);
+
+/* ---------- Logout ---------- */
+router.post("/logout", authMiddleware, customerController.logout);
+router.post("/logout/all", authMiddleware, customerController.logoutAll);
 
 export default router;

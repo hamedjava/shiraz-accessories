@@ -3,18 +3,19 @@ import jwt from "jsonwebtoken";
 import { randomUUID } from "crypto";
 import { adminRepository } from "../../infrastructure/repositories/adminRepository.js";
 import { sellerRepository } from "../../../../user/seller/infrastructure/repositories/seller-repository.js";
+import { CustomerModel } from "../../../customer/infrastructure/models/customer-model.js";
 import { CustomError } from "../../../../../core/errors/customError.js";
 
 /**
- * 🎯 UseCases: منطق دامنهٔ ادمین
+ * 🎯 UseCases دامنه ادمین
+ * شامل عملیات احراز هویت + مدیریت فروشنده + مدیریت مشتری
  */
 export const adminUsecases = {
-
-  /* ======================== 👤 ثبت‌نام ======================== */
+  /* ======================== 👤 ثبت‌نام ادمین ======================== */
   async registerAdmin({ name, email, password, mobile, role }) {
-    if (!email && !mobile) throw new CustomError("ایمیل یا موبایل الزامی است.", 400);
+    if (!email && !mobile)
+      throw new CustomError("ایمیل یا موبایل الزامی است.", 400);
 
-    // حالت ثبت‌نام با ایمیل و رمز عبور
     if (email && password) {
       const existingEmail = await adminRepository.findByEmail(email);
       if (existingEmail) throw new CustomError("ایمیل قبلاً ثبت شده است.", 409);
@@ -28,10 +29,11 @@ export const adminUsecases = {
         role: role || "manager",
         mobileVerified: false,
       });
-      return { success: true, message: "ثبت‌نام ایمیلی موفق", adminId: admin._id, role: admin.role };
+
+      await adminRepository.logAction(admin._id, "REGISTER_EMAIL", admin._id, "Admin");
+      return { success: true, message: "ثبت‌نام ایمیلی موفق.", adminId: admin._id, role: admin.role };
     }
 
-    // حالت ثبت‌نام فقط با موبایل
     if (mobile && !email && !password) {
       const existingMobile = await adminRepository.findByMobile(mobile);
       if (existingMobile) throw new CustomError("شماره موبایل قبلاً ثبت شده است.", 409);
@@ -39,10 +41,12 @@ export const adminUsecases = {
       const admin = await adminRepository.create({
         name,
         mobile,
-        mobileVerified: true,
+        mobileVerified: false,
         role: role || "support",
       });
-      return { success: true, message: "ثبت‌نام موبایلی موفق", adminId: admin._id, role: admin.role };
+
+      await adminRepository.logAction(admin._id, "REGISTER_MOBILE", admin._id, "Admin");
+      return { success: true, message: "ثبت‌نام موبایلی موفق.", adminId: admin._id, role: admin.role };
     }
 
     throw new CustomError("درخواست ثبت‌نام نامعتبر است.", 400);
@@ -65,144 +69,234 @@ export const adminUsecases = {
 
     const now = Date.now();
     const lastRequest = admin.otpLastRequestAt ? new Date(admin.otpLastRequestAt).getTime() : 0;
-    if (now - lastRequest < 60000) throw new CustomError("لطفاً یک دقیقه بعد تلاش کنید.", 429);
+    if (now - lastRequest < 60000)
+      throw new CustomError("لطفاً یک دقیقه بعد تلاش کنید.", 429);
 
     const otpCode = String(Math.floor(100000 + Math.random() * 900000));
-    const expireAt = new Date(now + 2 * 60 * 1000);
+    const expireAt = new Date(now + 2 * 60 * 1000); // ۲ دقیقه اعتبار
 
     await adminRepository.updateOtp(mobile, otpCode, expireAt);
-    return { success: true, message: "کد OTP ارسال شد.", otpCode, expireAt };
+    await adminRepository.logAction(admin._id, "SEND_OTP", admin._id, "Admin", { expireAt });
+
+    const isDev = ["development", "test"].includes(process.env.NODE_ENV);
+    return {
+      success: true,
+      message: "کد OTP ارسال شد.",
+      expireAt,
+      ...(isDev && { otpCode }),
+    };
   },
 
-  /* ======================== ✅ تأیید OTP ======================== */
+  /* ======================== ✅ تأیید OTP + صدور توکن ======================== */
   async verifyOtp({ mobile, otpCode }) {
     const admin = await adminRepository.findByMobile(mobile);
     if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
-    if (!admin.otpCode) throw new CustomError("کد OTP نامعتبر است.", 400);
-    if (Date.now() > new Date(admin.otpExpireAt).getTime()) throw new CustomError("کد OTP منقضی شده است.", 401);
-    if (String(admin.otpCode) !== String(otpCode)) throw new CustomError("کد OTP اشتباه است.", 401);
 
+    if (!admin.otpCode) throw new CustomError("کد OTP نامعتبر است.", 400);
+    if (new Date() > new Date(admin.otpExpireAt))
+      throw new CustomError("کد OTP منقضی شده است.", 401);
+    if (String(admin.otpCode) !== String(otpCode))
+      throw new CustomError("کد OTP اشتباه است.", 401);
+
+    // تأیید موبایل و پاک کردن OTP
     await adminRepository.update(admin._id, {
       mobileVerified: true,
       otpCode: null,
       otpExpireAt: null,
     });
-    return { success: true, message: "شماره موبایل تأیید شد.", adminId: admin._id };
-  },
 
-  /* ======================== 💻 ورود با موبایل و رمز عبور ======================== */
-  async loginAdminWithMobile({ mobile, password }) {
-    if (!mobile || !password) throw new CustomError("موبایل و رمز عبور الزامی است.", 400);
+    await adminRepository.logAction(admin._id, "VERIFY_OTP", admin._id, "Admin");
 
-    const admin = await adminRepository.findByMobile(mobile);
-    if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
-    if (!admin.password) throw new CustomError("رمز عبور برای این حساب تعریف نشده است.", 401);
-    if (!admin.mobileVerified) throw new CustomError("شماره موبایل تأیید نشده است.", 403);
-
-    const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) throw new CustomError("رمز عبور اشتباه است.", 401);
-
-    const accessToken = jwt.sign({ id: admin._id, role: admin.role, mobile: admin.mobile },
-      process.env.JWT_SECRET || "your_secret_key", { expiresIn: "1h" });
-
-    const refreshToken = jwt.sign({ id: admin._id },
-      process.env.JWT_REFRESH_SECRET || "your_refresh_secret", { expiresIn: "7d" });
-
-    const sessionId = randomUUID();
-    await adminRepository.addSession(admin._id, refreshToken, sessionId);
+    // 🔐 صدور توکن‌ها
+    const tokens = await this._generateTokens(admin);
 
     return {
       success: true,
-      message: "ورود با موبایل و رمز عبور موفق.",
-      accessToken,
-      refreshToken,
-      sessionId,
+      message: "شماره موبایل تأیید و ورود انجام شد.",
       adminId: admin._id,
       role: admin.role,
-      mobile: admin.mobile,
+      ...tokens,
     };
   },
 
-  /* ======================== 💻 ورود با ایمیل و رمز عبور ======================== */
+  /* ======================== 🔐 تولید توکن و نشست ======================== */
+  async _generateTokens(admin) {
+    const payload = { id: admin._id, role: admin.role, mobile: admin.mobile };
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const refreshToken = jwt.sign({ id: admin._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
+
+    const sessionId = randomUUID();
+    await adminRepository.addSession(admin._id, refreshToken, sessionId);
+    await adminRepository.addLoginRecord(admin._id, sessionId);
+
+    return { accessToken, refreshToken, sessionId };
+  },
+
+  /* ======================== 💻 ورود با موبایل و پسورد ======================== */
+  async loginAdminWithMobile({ mobile, password }) {
+    if (!mobile || !password)
+      throw new CustomError("موبایل و رمز عبور الزامی است.", 400);
+
+    const admin = await adminRepository.findByMobile(mobile);
+    if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
+    if (admin.isBlocked) throw new CustomError("حساب مسدود شده است.", 403);
+    if (!admin.mobileVerified) throw new CustomError("شماره موبایل تأیید نشده است.", 403);
+
+    const isMatch = await bcrypt.compare(password, admin.password || "");
+    if (!isMatch) throw new CustomError("رمز عبور اشتباه است.", 401);
+
+    const tokens = await this._generateTokens(admin);
+    await adminRepository.logAction(admin._id, "LOGIN_MOBILE", admin._id, "Admin");
+
+    return { success: true, message: "ورود موفق.", adminId: admin._id, role: admin.role, ...tokens };
+  },
+
+  /* ======================== 💻 ورود با ایمیل ======================== */
   async loginAdminWithEmail({ email, password }) {
-    if (!email || !password) throw new CustomError("ایمیل و رمز عبور الزامی است.", 400);
+    if (!email || !password)
+      throw new CustomError("ایمیل و رمز عبور الزامی است.", 400);
 
     const admin = await adminRepository.findByEmail(email);
     if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
-    if (!admin.password) throw new CustomError("رمز عبور برای این حساب تعریف نشده است.", 401);
+    if (admin.isBlocked) throw new CustomError("حساب مسدود شده است.", 403);
 
-    const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await bcrypt.compare(password, admin.password || "");
     if (!isMatch) throw new CustomError("رمز عبور اشتباه است.", 401);
 
-    const accessToken = jwt.sign({ id: admin._id, role: admin.role, email: admin.email },
-      process.env.JWT_SECRET || "your_secret_key", { expiresIn: "1h" });
+    const tokens = await this._generateTokens(admin);
+    await adminRepository.logAction(admin._id, "LOGIN_EMAIL", admin._id, "Admin");
 
-    const refreshToken = jwt.sign({ id: admin._id },
-      process.env.JWT_REFRESH_SECRET || "your_refresh_secret", { expiresIn: "7d" });
-
-    const sessionId = randomUUID();
-    await adminRepository.addSession(admin._id, refreshToken, sessionId);
-
-    return {
-      success: true,
-      message: "ورود با ایمیل و رمز عبور موفق.",
-      accessToken,
-      refreshToken,
-      sessionId,
-      adminId: admin._id,
-      role: admin.role,
-      email: admin.email,
-    };
+    return { success: true, message: "ورود با ایمیل موفق.", adminId: admin._id, role: admin.role, ...tokens };
   },
 
-  /* ======================== 📲 ورود با OTP ======================== */
-  async loginAdmin({ mobile, otpCode }) {
-    const admin = await adminRepository.findByMobile(mobile);
-    if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
-    if (!admin.mobileVerified) throw new CustomError("شماره موبایل تأیید نشده است.", 403);
-    if (String(admin.otpCode) !== String(otpCode)) throw new CustomError("کد OTP نادرست است.", 401);
-
-    const accessToken = jwt.sign({ id: admin._id, role: admin.role, mobile: admin.mobile },
-      process.env.JWT_SECRET || "your_secret_key", { expiresIn: "1h" });
-
-    const refreshToken = jwt.sign({ id: admin._id },
-      process.env.JWT_REFRESH_SECRET || "your_refresh_secret", { expiresIn: "7d" });
-
-    const sessionId = randomUUID();
-    await adminRepository.addSession(admin._id, refreshToken, sessionId);
-    await adminRepository.update(admin._id, { otpCode: null });
-
-    return {
-      success: true,
-      message: "ورود با OTP موفق.",
-      accessToken,
-      refreshToken,
-      sessionId,
-      adminId: admin._id,
-      role: admin.role,
-    };
-  },
-
-  /* ======================== 🚪 خروج ======================== */
-  async logoutAdmin({ adminId, refreshToken }) {
-    if (!adminId || !refreshToken) throw new CustomError("شناسه ادمین و توکن الزامی است.", 400);
-    await adminRepository.removeSession(adminId, refreshToken);
-    return { success: true, message: "خروج موفق." };
-  },
-
-  /* ======================== 📋 نشست‌ها ======================== */
+  /* ======================== 🟢 افزوده جدید: دریافت نشست‌های فعال ======================== */
   async getActiveSessions(adminId) {
-    const sessions = await adminRepository.getSessions(adminId);
-    return { success: true, count: sessions.length, sessions };
+    if (!adminId) throw new CustomError("شناسه ادمین الزامی است.", 400);
+
+    if (typeof adminRepository.getActiveSessions !== "function") {
+      throw new CustomError("❌ متد getActiveSessions در adminRepository تعریف نشده است.", 500);
+    }
+
+    const sessions = await adminRepository.getActiveSessions(adminId);
+    if (!sessions || sessions.length === 0)
+      return { success: true, message: "هیچ نشست فعالی یافت نشد.", data: [] };
+
+    await adminRepository.logAction(adminId, "GET_ACTIVE_SESSIONS", adminId, "Admin", { count: sessions.length });
+    return { success: true, message: "نشست‌های فعال با موفقیت دریافت شدند.", data: sessions };
   },
 
-  /* ======================== ✅ تأیید فروشنده ======================== */
-  async verifySeller(sellerId) {
+
+  /* ======================== 📋 مدیریت فروشنده و مشتری ======================== */
+  async verifySeller(sellerId, adminId) {
     const seller = await sellerRepository.findById(sellerId);
     if (!seller) throw new CustomError("فروشنده یافت نشد.", 404);
     if (seller.isVerified) throw new CustomError("قبلاً تأیید شده است.", 409);
 
     const updatedSeller = await sellerRepository.update(sellerId, { isVerified: true, role: "seller" });
+    await adminRepository.logAction(adminId, "VERIFY_SELLER", sellerId, "Seller");
     return { success: true, message: "فروشنده تأیید شد.", sellerId: updatedSeller._id };
+  },
+
+  async getAllCustomers(adminId) {
+    const admin = await adminRepository.findById(adminId);
+    if (!admin || !["superAdmin", "manager", "support"].includes(admin.role))
+      throw new CustomError("دسترسی غیرمجاز.", 403);
+
+    const customers = await CustomerModel.find({}, "-password -refreshTokens");
+    return { success: true, count: customers.length, customers };
+  },
+
+  async blockCustomer(customerId, adminId) {
+    const admin = await adminRepository.findById(adminId);
+    if (!["superAdmin", "manager"].includes(admin?.role))
+      throw new CustomError("دسترسی غیرمجاز.", 403);
+
+    const customer = await CustomerModel.findById(customerId);
+    if (!customer) throw new CustomError("مشتری یافت نشد.", 404);
+    if (customer.isBlocked) throw new CustomError("قبلاً بلاک شده است.", 409);
+
+    customer.isBlocked = true;
+    await customer.save();
+    await adminRepository.logAction(adminId, "BLOCK_CUSTOMER", customerId, "Customer");
+    return { success: true, message: "مشتری بلاک شد.", customerId };
+  },
+
+  async unblockCustomer(customerId, adminId) {
+    const admin = await adminRepository.findById(adminId);
+    if (!["superAdmin", "manager"].includes(admin?.role))
+      throw new CustomError("دسترسی غیرمجاز.", 403);
+
+    const customer = await CustomerModel.findById(customerId);
+    if (!customer) throw new CustomError("مشتری یافت نشد.", 404);
+    if (!customer.isBlocked) throw new CustomError("این مشتری بلاک نیست.", 409);
+
+    customer.isBlocked = false;
+    await customer.save();
+    await adminRepository.logAction(adminId, "UNBLOCK_CUSTOMER", customerId, "Customer");
+    return { success: true, message: "مشتری آنبلاک شد.", customerId };
+  },
+
+  async deleteCustomer(customerId, adminId) {
+    const admin = await adminRepository.findById(adminId);
+    if (admin?.role !== "superAdmin")
+      throw new CustomError("فقط سوپر ادمین مجاز است.", 403);
+
+    const deleted = await CustomerModel.findByIdAndDelete(customerId);
+    if (!deleted) throw new CustomError("مشتری پیدا نشد.", 404);
+
+    await adminRepository.logAction(adminId, "DELETE_CUSTOMER", customerId, "Customer");
+    return { success: true, message: "مشتری حذف شد.", customerId };
+  },
+
+  /* ======================== 📋 دریافت لیست فروشندگان ======================== */
+  async getAllSellers(adminId) {
+    if (adminId) {
+      const admin = await adminRepository.findById(adminId);
+      if (!admin)
+        throw new CustomError("ادمین یافت نشد.", 404);
+      if (!["superAdmin", "manager", "support"].includes(admin.role))
+        throw new CustomError("دسترسی غیرمجاز.", 403);
+    }
+
+    let sellers = [];
+    if (typeof sellerRepository.find === "function") {
+      sellers = await sellerRepository.find({});
+    } else if (typeof sellerRepository.getAll === "function") {
+      sellers = await sellerRepository.getAll();
+    } else if (typeof sellerRepository.getAllSellers === "function") {
+      sellers = await sellerRepository.getAllSellers();
+    } else {
+      throw new CustomError("Repository فروشنده متد 'find' یا 'getAll' ندارد.", 500);
+    }
+
+    await adminRepository.logAction(adminId, "GET_ALL_SELLERS", adminId, "Admin", { count: sellers?.length || 0 });
+
+    return sellers;
+  },
+
+  // ======================== 🧩 افزوده جدید: خروج از نشست خاص ========================
+  async logoutSession(adminId, sessionId) {
+    if (!adminId || !sessionId)
+      throw new CustomError("شناسه ادمین و نشست الزامی است.", 400);
+
+    const admin = await adminRepository.findById(adminId);
+    if (!admin) throw new CustomError("ادمین یافت نشد.", 404);
+
+    const activeSessions = await adminRepository.getActiveSessions(adminId);
+    const targetSession = activeSessions.find((s) => s.sessionId === sessionId);
+
+    if (!targetSession) throw new CustomError("نشست مورد نظر یافت نشد.", 404);
+
+    await adminRepository.removeSessionById(adminId, sessionId);
+    await adminRepository.logAction(adminId, "LOGOUT_SESSION", adminId, "Admin", {
+      sessionId,
+      wasCurrent: targetSession.isCurrent,
+    });
+
+    return {
+      success: true,
+      message: `نشست با شناسه ${sessionId} با موفقیت بسته شد.`,
+      sessionId,
+    };
   },
 };

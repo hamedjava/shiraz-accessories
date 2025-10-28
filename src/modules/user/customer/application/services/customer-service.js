@@ -1,102 +1,106 @@
 // application/services/customer-service.js
+
 import bcrypt from "bcrypt";
 import { CustomerRepository } from "../../infrastructure/repositories/customer-repository.js";
-import OTPService from "../../../seller/infrastructure/Security/otp-service.js"; // ← اصلاح شده
-import { TokenManager } from "../../../seller/infrastructure/Security/token-manager.js";
-import { Customer } from "../../../customer/domain/entities/customer-entity.js";
-
-const tokenManager = new TokenManager();
+import { CustomerUseCases } from "../../domain/usecases/customer-usecases.js";
+import { TokenManager } from "../../infrastructure/security/token-manager.js";
+import OTPService from "../../infrastructure/security/otp-service.js";
 
 export class CustomerService {
   constructor() {
-    this.customerRepo = new CustomerRepository();
-    this.otp = new OTPService(); // ← مطابق import جدید
-    this.tokenManager = tokenManager;
+    this.repo = new CustomerRepository();
+    this.usecase = new CustomerUseCases(this.repo);
+    this.tokenManager = new TokenManager();
+    this.otpService = new OTPService();
   }
 
-  // ثبت‌نام با موبایل
-  async registerWithMobile(mobile, name) {
-    const existing = await this.customerRepo.findByMobile(mobile);
-    if (existing) throw new Error("شماره موبایل قبلاً ثبت شده است.");
-    const otp = this.otp.generateOTP(mobile);
-    return { success: true, message: "کد تایید ارسال شد", otp };
-  }
-
-  // ثبت‌نام با ایمیل و پسورد
-  async registerWithEmail(email, password, name) {
-    const existing = await this.customerRepo.findByEmail(email);
-    if (existing) throw new Error("ایمیل تکراری است.");
+  /* ---------------- Registration ---------------- */
+  async registerEmailPassword(name, email, password) {
     const hashed = await bcrypt.hash(password, 10);
-    const newCustomer = new Customer({ name, email, password: hashed, isVerified: true });
-    const saved = await this.customerRepo.save(newCustomer);
-    return { success: true, customer: saved };
+    return this.usecase.register({ name, email, password: hashed, isVerified: true });
   }
 
-  // ورود با موبایل و OTP
-  async loginWithMobileOtp(mobile, otpCode) {
-    const verified = this.otp.verifyOTP(mobile, otpCode);
-    if (!verified) throw new Error("کد تایید نامعتبر است.");
-    let user = await this.customerRepo.findByMobile(mobile);
-    if (!user) {
-      user = new Customer({ mobile, isVerified: true });
-      user = await this.customerRepo.save(user);
-    }
-    const tokens = this.tokenManager.generateTokens({ id: user.id, roles: user.roles });
-    await this.customerRepo.updateRefreshToken(user.id, tokens.refreshToken);
-    return { success: true, user, tokens };
+  async registerMobilePassword(name, mobile, password) {
+    const hashed = await bcrypt.hash(password, 10);
+    return this.usecase.register({ name, mobile, password: hashed, isVerified: true });
   }
 
-  // ورود با ایمیل و پسورد
-  async loginWithEmailPassword(email, password) {
-    const user = await this.customerRepo.findByEmail(email);
-    if (!user) throw new Error("کاربر یافت نشد.");
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) throw new Error("رمزعبور اشتباه است.");
-    const tokens = this.tokenManager.generateTokens({ id: user.id, roles: user.roles });
-    await this.customerRepo.updateRefreshToken(user.id, tokens.refreshToken);
-    return { success: true, user, tokens };
+  /* ---------------- OTP Flow ---------------- */
+  async requestOtp(mobile) {
+    return this.otpService.generate(mobile);
   }
 
-  async getProfile(userId) {
-    const user = await this.customerRepo.findById(userId);
-    if (!user) throw new Error("کاربر یافت نشد.");
-    const { password, refreshToken, ...info } = user;
-    return { success: true, profile: info };
+  async loginMobileOtp(mobile, otp) {
+    const verified = this.otpService.verify(mobile, otp);
+    if (!verified) throw new Error("کد OTP نامعتبر است");
+
+    let user = await this.repo.findByMobile(mobile);
+    if (!user) user = await this.repo.create({ mobile, isVerified: true });
+
+    // بررسی اینکه مشتری بلاک شده نباشد
+    if (user.isBlocked) throw new Error("دسترسی به حساب شما مسدود شده است");
+
+    const { accessToken, refreshToken } = this.tokenManager.generateTokens({
+      id: user.id,
+      roles: user.roles
+    });
+
+    user.addRefreshToken(refreshToken);
+    await this.repo.save(user);
+
+    return { user, accessToken, refreshToken };
   }
 
-  async updateProfile(userId, updates) {
-    if (updates.password) updates.password = await bcrypt.hash(updates.password, 10);
-    const updated = await this.customerRepo.update(userId, updates);
-    return { success: true, updated };
+  /* ---------------- Refresh Session ---------------- */
+  async refreshSession(refreshToken) {
+    if (!refreshToken) throw new Error("رفرش‌توکن ارسال نشده است");
+
+    const payload = this.tokenManager.verifyRefreshToken(refreshToken);
+    if (!payload || !payload.id) throw new Error("توکن نامعتبر است");
+
+    const user = await this.repo.findById(payload.id);
+    if (!user) throw new Error("کاربر یافت نشد");
+    if (user.isBlocked) throw new Error("دسترسی حساب شما مسدود شده است");
+
+    const hasToken = Array.isArray(user.refreshTokens) && user.refreshTokens.some(rt => {
+      if (typeof rt === "string") return rt === refreshToken;
+      if (typeof rt === "object" && rt.token) return rt.token === refreshToken;
+      return false;
+    });
+    if (!hasToken) throw new Error("رفرش‌توکن در سشن ذخیره نشده است");
+
+    const newTokens = this.tokenManager.generateTokens({ id: user.id, roles: user.roles });
+    user.removeRefreshToken(refreshToken);
+    user.addRefreshToken(newTokens.refreshToken);
+    await this.repo.save(user);
+
+    return newTokens;
   }
 
-  async getAllCustomers() {
-    const list = await this.customerRepo.getAll();
-    return { success: true, customers: list };
+  /* ---------------- Logout Flow ---------------- */
+  async logoutSingle(userId, refreshToken) {
+    if (!refreshToken) throw new Error("رفرش‌توکن برای خروج ارسال نشده است");
+    const user = await this.repo.findById(userId);
+    if (!user) throw new Error("کاربر یافت نشد");
+
+    const hasToken = Array.isArray(user.refreshTokens) && user.refreshTokens.some(rt => {
+      if (typeof rt === "string") return rt === refreshToken;
+      if (typeof rt === "object" && rt.token) return rt.token === refreshToken;
+      return false;
+    });
+    if (!hasToken) throw new Error("توکن در سشن‌های فعال یافت نشد");
+
+    user.removeRefreshToken(refreshToken);
+    await this.repo.save(user);
+
+    return { success: true, message: "خروج موفقیت‌آمیز بود" };
   }
 
-  async getCustomer(id) {
-    const customer = await this.customerRepo.findById(id);
-    if (!customer) throw new Error("یافت نشد");
-    return { success: true, customer };
-  }
-
-  async deleteCustomer(id) {
-    await this.customerRepo.delete(id);
-    return { success: true };
-  }
-
-  async logout(userId, refreshToken) {
-    const valid = this.tokenManager.verifyRefreshToken(refreshToken);
-    if (!valid) throw new Error("توکن نامعتبر است.");
-    await this.customerRepo.invalidateSession(userId);
-    return { success: true };
-  }
-
-  async validateSession(token) {
-    const payload = this.tokenManager.verifyAccessToken(token);
-    return { success: true, payload };
+  async logoutAll(userId) {
+    const user = await this.repo.findById(userId);
+    if (!user) throw new Error("کاربر یافت نشد");
+    user.clearAllRefreshTokens();
+    await this.repo.save(user);
+    return { success: true, message: "تمام سشن‌ها بسته شدند" };
   }
 }
-
-export const customerServiceInstance = new CustomerService();
