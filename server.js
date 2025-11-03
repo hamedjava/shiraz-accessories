@@ -31,19 +31,22 @@ const DB_URI = process.env.DB_URI || "mongodb://127.0.0.1:27017/cleanarch-shop";
     await connectDB(DB_URI);
     console.log("✅ اتصال موفق به پایگاه داده برقرار شد");
 
-    // 🛠 اجرای اپلیکیشن روی پورت مشخص شده
-    app.listen(PORT, () => {
-      console.clear(); // پاک کردن صفحه ترمینال برای نمایش تمیزتر
-      console.log("===============================================");
-      console.log(" 🏗  Clean Architecture Shop Backend Started");
-      console.log("===============================================");
-      console.log(`🌐  API URL:        http://localhost:${PORT}/api`);
-      console.log(`🗄  Database URI:   ${DB_URI}`);
-      console.log(`🚀  Environment:    ${process.env.NODE_ENV || "development"}`);
-      console.log("===============================================");
-      console.log("📡  Listening for incoming requests...");
-      console.log("===============================================");
-    });
+    // در حالت تست، سرور نباید واقعا listen کند تا Jest پروسه را باز نگه ندارد
+    if (process.env.NODE_ENV !== "test") {
+      // 🛠 اجرای اپلیکیشن روی پورت مشخص شده
+      app.listen(PORT, () => {
+        console.clear(); // پاک کردن صفحه ترمینال برای نمایش تمیزتر
+        console.log("===============================================");
+        console.log(" 🏗  Clean Architecture Shop Backend Started");
+        console.log("===============================================");
+        console.log(`🌐  API URL:        http://localhost:${PORT}/api`);
+        console.log(`🗄  Database URI:   ${DB_URI}`);
+        console.log(`🚀  Environment:    ${process.env.NODE_ENV || "development"}`);
+        console.log("===============================================");
+        console.log("📡  Listening for incoming requests...");
+        console.log("===============================================");
+      });
+    }
   } catch (err) {
     // ❌ هندل خطا در اتصال دیتابیس
     console.error("===============================================");
@@ -51,6 +54,15 @@ const DB_URI = process.env.DB_URI || "mongodb://127.0.0.1:27017/cleanarch-shop";
     console.error("جزئیات:", err.message);
     console.error("لطفاً تنظیمات فایل .env یا وضعیت MongoDB را بررسی کنید.");
     console.error("===============================================");
-    process.exit(1); // خروج از پروسه برای جلوگیری از اجرای سرور بدون اتصال DB
+
+    // فقط در حالت غیرِ تست خارج شو تا Jest پروسه را متوقف نکند
+    if (process.env.NODE_ENV !== "test") {
+      process.exit(1); // خروج از پروسه برای جلوگیری از اجرای سرور بدون اتصال DB
+    }
   }
 })();
+
+/* ============================================================
+   📤 اکسپورت اپلیکیشن برای استفاده در تست‌ها و سایر ماژول‌ها
+============================================================ */
+export default app;

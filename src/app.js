@@ -19,6 +19,9 @@ import { errorHandler } from "./core/middlewares/errorHandler.js";
 
 // 🧩 وارد کردن مسیرهای ماژول‌های سیستم (Case-sensitive! مخصوص لینوکس)
 import adminRoutes from "./modules/user/admin/interfaces/http/adminRoutes.js";
+import adminPanelRoutes from "./modules/user/admin/interfaces/http/admin_panel_routes.js";
+import adminProductRoutes from "./modules/product/interfaces/http/product_routes.js";
+
 import sellerRoutes from "./modules/user/seller/interfaces/http/seller-routes.js";
 
 // 🧩 مسیر مربوط به مشتریان (Customers)
@@ -76,6 +79,8 @@ app.get("/api", (req, res) => {
 
 // مسیر مدیران (Admins)
 app.use("/api/admins", adminRoutes);
+app.use("/api/admin", adminProductRoutes);
+app.use("/api/admin", adminPanelRoutes);
 
 // مسیر فروشندگان (Sellers)
 app.use("/api/sellers", sellerRoutes);

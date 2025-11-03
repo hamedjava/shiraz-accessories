@@ -8,7 +8,7 @@ import { CustomError } from "../../../../../core/errors/customError.js";
 
 /**
  * 🎯 UseCases دامنه ادمین
- * شامل عملیات احراز هویت + مدیریت فروشنده + مدیریت مشتری
+ * شامل عملیات احراز هویت + مدیریت فروشنده + مدیریت مشتری + آمار داشبورد
  */
 export const adminUsecases = {
   /* ======================== 👤 ثبت‌نام ادمین ======================== */
@@ -169,7 +169,7 @@ export const adminUsecases = {
     return { success: true, message: "ورود با ایمیل موفق.", adminId: admin._id, role: admin.role, ...tokens };
   },
 
-  /* ======================== 🟢 افزوده جدید: دریافت نشست‌های فعال ======================== */
+  /* ======================== 🟢 دریافت نشست‌های فعال ======================== */
   async getActiveSessions(adminId) {
     if (!adminId) throw new CustomError("شناسه ادمین الزامی است.", 400);
 
@@ -184,7 +184,6 @@ export const adminUsecases = {
     await adminRepository.logAction(adminId, "GET_ACTIVE_SESSIONS", adminId, "Admin", { count: sessions.length });
     return { success: true, message: "نشست‌های فعال با موفقیت دریافت شدند.", data: sessions };
   },
-
 
   /* ======================== 📋 مدیریت فروشنده و مشتری ======================== */
   async verifySeller(sellerId, adminId) {
@@ -248,7 +247,6 @@ export const adminUsecases = {
     return { success: true, message: "مشتری حذف شد.", customerId };
   },
 
-  /* ======================== 📋 دریافت لیست فروشندگان ======================== */
   async getAllSellers(adminId) {
     if (adminId) {
       const admin = await adminRepository.findById(adminId);
@@ -270,11 +268,9 @@ export const adminUsecases = {
     }
 
     await adminRepository.logAction(adminId, "GET_ALL_SELLERS", adminId, "Admin", { count: sellers?.length || 0 });
-
     return sellers;
   },
 
-  // ======================== 🧩 افزوده جدید: خروج از نشست خاص ========================
   async logoutSession(adminId, sessionId) {
     if (!adminId || !sessionId)
       throw new CustomError("شناسه ادمین و نشست الزامی است.", 400);
@@ -299,4 +295,117 @@ export const adminUsecases = {
       sessionId,
     };
   },
+
+  /* ======================== 📊 آمار داشبورد (Dashboard Stats) ======================== */
+  async getDashboardStats() {
+    const usersCount = typeof adminRepository.countUsers === "function"
+      ? await adminRepository.countUsers()
+      : await CustomerModel.countDocuments().catch(() => 0);
+
+    const sellersCount = typeof sellerRepository.count === "function"
+      ? await sellerRepository.count()
+      : typeof sellerRepository.getAll === "function"
+        ? (await sellerRepository.getAll())?.length || 0
+        : 0;
+
+    const productsCount = typeof adminRepository.countProducts === "function"
+      ? await adminRepository.countProducts()
+      : 0;
+
+    const ordersCount = typeof adminRepository.countOrders === "function"
+      ? await adminRepository.countOrders()
+      : 0;
+
+    const categoriesCount = typeof adminRepository.countCategories === "function"
+      ? await adminRepository.countCategories()
+      : 0;
+
+    try {
+      await adminRepository.logAction(null, "GET_DASHBOARD_STATS", null, "System", {
+        usersCount, sellersCount, productsCount, ordersCount, categoriesCount,
+      });
+    } catch (_) {}
+
+    return {
+      success: true,
+      message: "آمار داشبورد با موفقیت دریافت شد.",
+      data: {
+        usersCount,
+        sellersCount,
+        productsCount,
+        ordersCount,
+        categoriesCount,
+      },
+    };
+  },
+    /* ======================== 🔄 تغییر وضعیت کاربر (Block / Unblock / Delete) ======================== */
+    async changeUserStatus(userId, action, adminId) {
+      try {
+        if (!userId || !action || !adminId) {
+          throw new CustomError("پارامترهای ورودی نامعتبر هستند.", 400);
+        }
+  
+        const admin = await adminRepository.findById(adminId);
+        if (!admin) {
+          throw new CustomError("ادمین معتبر نیست.", 404);
+        }
+  
+        // نرمال‌سازی نقش برای جلوگیری از حساسیت حروف
+        const role = (admin.role || "").toLowerCase();
+        if (!["superadmin", "manager", "support"].includes(role)) {
+          throw new CustomError("ادمین مجاز به تغییر وضعیت کاربران نیست.", 403);
+        }
+  
+        // یافتن کاربر از مدل مشتری (در پروژه شما مشتری همان user است)
+        const customer = await CustomerModel.findById(userId);
+        if (!customer) {
+          throw new CustomError("کاربر یافت نشد.", 404);
+        }
+  
+        // عملیات بر اساس حالت درخواستی
+        let update = {};
+        let message = "";
+  
+        switch (action.toLowerCase()) {
+          case "block":
+            if (customer.isBlocked) throw new CustomError("کاربر از قبل بلاک است.", 409);
+            update.isBlocked = true;
+            message = "کاربر با موفقیت بلاک شد.";
+            break;
+  
+          case "unblock":
+            if (!customer.isBlocked) throw new CustomError("کاربر در حال حاضر بلاک نیست.", 409);
+            update.isBlocked = false;
+            message = "کاربر با موفقیت آنبلاک شد.";
+            break;
+  
+          case "delete":
+            await CustomerModel.findByIdAndDelete(userId);
+            await adminRepository.logAction(adminId, "DELETE_USER", userId, "Customer");
+            return { success: true, message: "کاربر با موفقیت حذف شد.", userId };
+          
+          default:
+            throw new CustomError("نوع عملیات نامعتبر است. (block / unblock / delete)", 400);
+        }
+  
+        // ذخیره نتیجه در دیتابیس
+        Object.assign(customer, update);
+        await customer.save();
+  
+        // ثبت لاگ در مخزن ادمین
+        await adminRepository.logAction(adminId, "CHANGE_USER_STATUS", userId, "Customer", update);
+  
+        return {
+          success: true,
+          message,
+          userId,
+          status: update.isBlocked ? "blocked" : "active",
+          isBlocked: update.isBlocked,
+        };
+      } catch (error) {
+        console.error("❌ خطا در changeUserStatus:", error);
+        throw error;
+      }
+    },
+  
 };

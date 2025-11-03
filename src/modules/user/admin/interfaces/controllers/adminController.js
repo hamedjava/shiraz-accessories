@@ -10,16 +10,17 @@ import {
   deleteAdmin,
   getAllSellersByAdmin,
   verifySellerByAdmin,
-  getAllCustomersByAdmin,
-  blockCustomerByAdmin,
-  unblockCustomerByAdmin,
-  deleteCustomerByAdmin,
+  // 🟢 اصلاحات کلیدی در ایمپورت‌ها برای سازگاری با adminService.js
+  getAllUsers as getAllCustomersByAdmin,
+  blockUser as blockCustomerByAdmin,
+  unblockUser as unblockCustomerByAdmin,
+  deleteUser as deleteCustomerByAdmin,
 } from "../../application/services/adminService.js";
 
 import { CustomError } from "../../../../../core/errors/customError.js";
 
 /* ===========================
-👤 ثبت‌نام ادمین
+👤 ثبت‌ نام ادمین
 =========================== */
 export async function register(req, res, next) {
   try {
@@ -117,7 +118,7 @@ export async function logout(req, res, next) {
 }
 
 /* ===========================
-📋 دریافت نشست‌های فعال ادمین
+📋 دریافت نشست‌ های فعال ادمین
 =========================== */
 export async function sessions(req, res, next) {
   try {
@@ -165,7 +166,7 @@ export async function getAll(req, res, next) {
 }
 
 /* ===========================
-✏️ بروزرسانی ادمین
+✏️ بروز رسانی ادمین
 =========================== */
 export async function update(req, res, next) {
   try {
@@ -265,15 +266,17 @@ export async function getAllCustomers(req, res, next) {
     if (!adminId)
       throw new CustomError("دسترسی ادمین تایید نشده است.", 401);
 
+    // ✔ اکنون از getAllUsers (alias getAllCustomersByAdmin) فراخوانی می‌شود
     const result = await getAllCustomersByAdmin(adminId);
-    const list = result.customers.map((c) => ({
+
+    const list = result.customers?.map((c) => ({
       id: c._id,
       name: c.name,
       email: c.email,
       mobile: c.mobile,
       isBlocked: c.isBlocked,
       createdAt: c.createdAt,
-    }));
+    })) || [];
 
     res.status(200).json({
       success: true,
@@ -285,6 +288,9 @@ export async function getAllCustomers(req, res, next) {
   }
 }
 
+/* =======================================================
+🧩 عملیات روی مشتریان (block/unblock/delete)
+======================================================= */
 export async function blockCustomer(req, res, next) {
   try {
     const adminId = req.admin?.id;
@@ -340,18 +346,16 @@ export async function deleteCustomer(req, res, next) {
 }
 
 /* ===========================
-🧩 حذف نشست خاص (Session Invalidation)
+🧩 حذف نشست خاص
 =========================== */
 export async function deleteSession(req, res, next) {
   try {
     const { adminId, sessionId } = req.params;
 
-    if (!adminId || !sessionId) {
+    if (!adminId || !sessionId)
       throw new CustomError("شناسه ادمین و نشست الزامی است.", 400);
-    }
 
-    // همانند سایر کنترلرها، فراخوانی از لایه‌ی سرویس انجام می‌گیرد
-    const { logoutSessionByAdmin } = await import("../../application/services/adminService.js");
+    const { logoutSessionByAdmin } = await import("../application/services/adminService.js");
     const result = await logoutSessionByAdmin(adminId, sessionId);
 
     res.status(200).json({
