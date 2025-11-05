@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///F:/shirazMobile/shiraz-mobile-ui/src/app/page.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport Header from \"@/widgets/Header\";\r\nimport HeroSection from \"@/widgets/HeroSection\";\r\nimport ProductGrid from \"@/widgets/ProductGrid\";\r\nimport Footer from \"@/widgets/Footer\";\r\nimport FloatingButton from \"@/widgets/FloatingButton\";\r\n\r\nimport { Box } from \"@mui/joy\";\r\n\r\nexport default function HomePage() {\r\n  return (\r\n    <Box sx={{ display: \"flex\", flexDirection: \"column\", minHeight: \"100vh\" }}>\r\n      <Header />\r\n      <HeroSection />\r\n      <ProductGrid />\r\n      <Footer />\r\n      <FloatingButton />\r\n    </Box>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAQA;AARA;;;;;;;;AAUe,SAAS;IACtB,qBACE,6LAAC,sLAAG;QAAC,IAAI;YAAE,SAAS;YAAQ,eAAe;YAAU,WAAW;QAAQ;;0BACtE,6LAAC;;;;;0BACD,6LAAC;;;;;0BACD,6LAAC;;;;;0BACD,6LAAC;;;;;0BACD,6LAAC;;;;;;;;;;;AAGP;KAVwB","debugId":null}}]
+}
