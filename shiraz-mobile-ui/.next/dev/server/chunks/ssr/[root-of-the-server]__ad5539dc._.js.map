@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///F:/shirazMobile/shiraz-mobile-ui/src/utils/createEmotionCache.ts"],"sourcesContent":["\"use client\";\r\n\r\nimport createCache from \"@emotion/cache\";\r\n\r\n// این تابع cache emotion با prefix سفارشی برای MUI می‌سازد\r\nexport default function createEmotionCache() {\r\n  return createCache({ key: \"mui\", prepend: true });\r\n}\r\n"],"names":[],"mappings":";;;;AAEA;AAFA;;AAKe,SAAS;IACtB,OAAO,IAAA,yNAAW,EAAC;QAAE,KAAK;QAAO,SAAS;IAAK;AACjD","debugId":null}},
+    {"offset": {"line": 27, "column": 0}, "map": {"version":3,"sources":["file:///F:/shirazMobile/shiraz-mobile-ui/src/components/ThemeRegistry.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport * as React from \"react\";\r\nimport { CssVarsProvider } from \"@mui/joy/styles\";\r\nimport { CacheProvider } from \"@emotion/react\";\r\nimport createEmotionCache from \"../../src/utils/createEmotionCache\";\r\n\r\nconst clientSideEmotionCache = createEmotionCache();\r\n\r\nexport default function ThemeRegistry({\r\n  children,\r\n}: {\r\n  children: React.ReactNode;\r\n}) {\r\n  return (\r\n    <CacheProvider value={clientSideEmotionCache}>\r\n      <CssVarsProvider>{children}</CssVarsProvider>\r\n    </CacheProvider>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;AAGA;AACA;AACA;AALA;;;;;AAOA,MAAM,yBAAyB,IAAA,uKAAkB;AAElC,SAAS,cAAc,EACpC,QAAQ,EAGT;IACC,qBACE,wQAAC,mRAAa;QAAC,OAAO;kBACpB,cAAA,wQAAC,sMAAe;sBAAE;;;;;;;;;;;AAGxB","debugId":null}}]
+}

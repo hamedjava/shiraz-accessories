@@ -100,67 +100,184 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$no
 ;
 function HeroSection() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+        component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].section,
+        initial: {
+            opacity: 0,
+            y: 50
+        },
+        animate: {
+            opacity: 1,
+            y: 0
+        },
+        transition: {
+            duration: 0.8,
+            ease: "easeOut"
+        },
         sx: {
-            minHeight: "70vh",
+            position: "relative",
+            minHeight: {
+                xs: "70vh",
+                md: "85vh"
+            },
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
-            px: 2
+            overflow: "hidden",
+            bgcolor: "#fff",
+            // پس‌زمینه گرادینت هماهنگ با برند توروب
+            background: "radial-gradient(circle at top right, #ffe5e8 0%, #ffffff 80%)",
+            px: 3,
+            py: 6
         },
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-            initial: {
-                opacity: 0,
-                y: 40
-            },
-            animate: {
-                opacity: 1,
-                y: 0
-            },
-            transition: {
-                duration: 0.7
-            },
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                    level: "h1",
-                    sx: {
-                        mb: 1
-                    },
-                    children: "جدیدترین مدل‌های موبایل 🎉"
-                }, void 0, false, {
-                    fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
-                    lineNumber: 24,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                    level: "body-lg",
-                    sx: {
-                        mb: 3
-                    },
-                    color: "neutral",
-                    children: "بهترین قیمت، ارسال سریع، ضمانت اصالت کالا"
-                }, void 0, false, {
-                    fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
-                    lineNumber: 27,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
-                    size: "lg",
-                    color: "primary",
-                    children: "مشاهده محصولات"
-                }, void 0, false, {
-                    fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
-                    lineNumber: 30,
-                    columnNumber: 9
-                }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
-            lineNumber: 19,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div,
+                animate: {
+                    y: [
+                        0,
+                        -8,
+                        0
+                    ]
+                },
+                transition: {
+                    repeat: Infinity,
+                    duration: 6,
+                    ease: "easeInOut"
+                },
+                sx: {
+                    position: "absolute",
+                    top: "10%",
+                    left: "15%",
+                    width: 90,
+                    height: 90,
+                    borderRadius: "50%",
+                    background: "rgba(230,0,35,0.08)",
+                    filter: "blur(3px)"
+                }
+            }, void 0, false, {
+                fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                lineNumber: 31,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div,
+                animate: {
+                    y: [
+                        0,
+                        6,
+                        0
+                    ]
+                },
+                transition: {
+                    repeat: Infinity,
+                    duration: 5,
+                    ease: "easeInOut"
+                },
+                sx: {
+                    position: "absolute",
+                    bottom: "12%",
+                    right: "18%",
+                    width: 60,
+                    height: 60,
+                    borderRadius: "50%",
+                    background: "rgba(230,0,35,0.1)",
+                    filter: "blur(4px)"
+                }
+            }, void 0, false, {
+                fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                lineNumber: 46,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                initial: {
+                    opacity: 0,
+                    y: 25
+                },
+                animate: {
+                    opacity: 1,
+                    y: 0
+                },
+                transition: {
+                    duration: 0.9,
+                    delay: 0.2
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                        level: "h1",
+                        sx: {
+                            mb: 2,
+                            fontSize: {
+                                xs: "2.2rem",
+                                md: "3.2rem"
+                            },
+                            fontWeight: 800,
+                            color: "#E60023",
+                            lineHeight: 1.2
+                        },
+                        children: "جدیدترین مدل‌های موبایل 🎉"
+                    }, void 0, false, {
+                        fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                        lineNumber: 68,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                        level: "body-lg",
+                        sx: {
+                            mb: 4,
+                            color: "text.secondary",
+                            fontSize: {
+                                xs: "1rem",
+                                md: "1.2rem"
+                            },
+                            maxWidth: 600,
+                            mx: "auto"
+                        },
+                        children: "بهترین قیمت، ارسال سریع و ضمانت اصالت کالا"
+                    }, void 0, false, {
+                        fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                        lineNumber: 81,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                        size: "lg",
+                        variant: "solid",
+                        component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button,
+                        whileHover: {
+                            scale: 1.07
+                        },
+                        whileTap: {
+                            scale: 0.98
+                        },
+                        sx: {
+                            px: 5,
+                            py: 1.5,
+                            fontSize: "1.1rem",
+                            bgcolor: "#E60023",
+                            color: "#fff",
+                            borderRadius: "xl",
+                            boxShadow: "0 8px 20px rgba(230,0,35,0.3)",
+                            "&:hover": {
+                                bgcolor: "#c2001d",
+                                boxShadow: "0 10px 25px rgba(230,0,35,0.35)"
+                            },
+                            transition: "all 0.3s ease"
+                        },
+                        children: "مشاهده محصولات"
+                    }, void 0, false, {
+                        fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                        lineNumber: 94,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
+                lineNumber: 63,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/shiraz-mobile-ui/src/components/HeroSection.tsx",
         lineNumber: 8,
         columnNumber: 5
@@ -183,9 +300,8 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Grid$2f$Grid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/Grid/Grid.js [app-client] (ecmascript) <export default as Grid>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Card$2f$Card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Card$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/Card/Card.js [app-client] (ecmascript) <export default as Card>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$CardContent$2f$CardContent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CardContent$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/CardContent/CardContent.js [app-client] (ecmascript) <export default as CardContent>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/Typography/Typography.js [app-client] (ecmascript) <export default as Typography>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$AspectRatio$2f$AspectRatio$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AspectRatio$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/AspectRatio/AspectRatio.js [app-client] (ecmascript) <export default as AspectRatio>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/Button/Button.js [app-client] (ecmascript) <export default as Button>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
 "use client";
 ;
@@ -194,121 +310,124 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$no
 const products = [
     {
         id: 1,
-        name: "Samsung Galaxy S24",
-        price: "45,000,000",
-        img: "/images/s24.jpg"
+        title: "کاور سیلیکونی آیفون",
+        price: "210,000 تومان",
+        image: "/assets/cover1.png"
     },
     {
         id: 2,
-        name: "iPhone 15 Pro",
-        price: "70,000,000",
-        img: "/images/iphone15.jpg"
+        title: "محافظ گوشی سامسونگ",
+        price: "150,000 تومان",
+        image: "/assets/protector1.png"
     },
     {
         id: 3,
-        name: "Xiaomi 14 Ultra",
-        price: "39,500,000",
-        img: "/images/xiaomi14.jpg"
+        title: "هندزفری بلوتوث",
+        price: "460,000 تومان",
+        image: "/assets/earbuds.png"
     },
     {
         id: 4,
-        name: "Nokia X30",
-        price: "28,000,000",
-        img: "/images/nokiaX30.jpg"
+        title: "شارژر سریع 25 وات",
+        price: "320,000 تومان",
+        image: "/assets/charger.png"
     }
 ];
 function ProductGrid() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Grid$2f$Grid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
         container: true,
-        spacing: 2,
+        spacing: 3,
         sx: {
-            p: 3
+            p: {
+                xs: 2,
+                md: 6
+            },
+            justifyContent: "center"
         },
-        children: products.map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Grid$2f$Grid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
+        component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div,
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: {
+            once: true,
+            amount: 0.2
+        },
+        transition: {
+            staggerChildren: 0.15
+        },
+        children: products.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Grid$2f$Grid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                 xs: 12,
                 sm: 6,
                 md: 3,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                    initial: {
-                        opacity: 0,
-                        y: 20
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Card$2f$Card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Card$3e$__["Card"], {
+                    component: __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div,
+                    whileHover: {
+                        scale: 1.04,
+                        boxShadow: "0 10px 25px rgba(230,0,35,0.2)"
                     },
-                    whileInView: {
-                        opacity: 1,
-                        y: 0
+                    transition: {
+                        type: "spring",
+                        stiffness: 300
                     },
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Card$2f$Card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Card$3e$__["Card"], {
-                        variant: "outlined",
-                        sx: {
-                            transition: "0.3s",
-                            "&:hover": {
-                                boxShadow: "lg"
+                    sx: {
+                        cursor: "pointer",
+                        overflow: "hidden",
+                        borderRadius: "lg",
+                        bgcolor: "#fff"
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                            src: p.image,
+                            alt: p.title,
+                            style: {
+                                width: "100%",
+                                height: 180,
+                                objectFit: "contain"
                             }
-                        },
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$AspectRatio$2f$AspectRatio$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AspectRatio$3e$__["AspectRatio"], {
-                                ratio: "1",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                    src: product.img,
-                                    alt: product.name
+                        }, void 0, false, {
+                            fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
+                            lineNumber: 41,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$CardContent$2f$CardContent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CardContent$3e$__["CardContent"], {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                    level: "body-lg",
+                                    sx: {
+                                        fontWeight: 600,
+                                        mb: 1
+                                    },
+                                    children: p.title
                                 }, void 0, false, {
                                     fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                                    lineNumber: 21,
-                                    columnNumber: 17
+                                    lineNumber: 51,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                    level: "body-sm",
+                                    sx: {
+                                        color: "text.secondary"
+                                    },
+                                    children: p.price
+                                }, void 0, false, {
+                                    fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
+                                    lineNumber: 54,
+                                    columnNumber: 15
                                 }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                                lineNumber: 20,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                level: "title-md",
-                                sx: {
-                                    mt: 1
-                                },
-                                children: product.name
-                            }, void 0, false, {
-                                fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                                lineNumber: 23,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                color: "neutral",
-                                sx: {
-                                    mb: 1
-                                },
-                                children: [
-                                    product.price,
-                                    " تومان"
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                                lineNumber: 26,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
-                                size: "sm",
-                                color: "primary",
-                                children: "افزودن به سبد"
-                            }, void 0, false, {
-                                fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                                lineNumber: 29,
-                                columnNumber: 15
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                        lineNumber: 19,
-                        columnNumber: 13
-                    }, this)
-                }, void 0, false, {
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
+                            lineNumber: 50,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                    lineNumber: 18,
+                    lineNumber: 27,
                     columnNumber: 11
                 }, this)
-            }, product.id, false, {
+            }, p.id, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx",
-                lineNumber: 17,
+                lineNumber: 26,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
@@ -405,16 +524,17 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$no
 ;
 function FloatingButton() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-        initial: {
-            opacity: 0,
-            y: 20
-        },
         animate: {
-            opacity: 1,
-            y: 0
+            y: [
+                0,
+                -5,
+                0
+            ]
         },
         transition: {
-            duration: 0.3
+            repeat: Infinity,
+            duration: 3,
+            ease: "easeInOut"
         },
         style: {
             position: "fixed",
@@ -424,23 +544,23 @@ function FloatingButton() {
         },
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Fab$2f$Fab$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Fab$3e$__["Fab"], {
             color: "primary",
-            size: "medium",
             sx: {
-                boxShadow: 3,
-                bgcolor: "primary.main",
+                bgcolor: "#E60023",
                 "&:hover": {
-                    bgcolor: "primary.dark"
-                }
+                    bgcolor: "#c2001d",
+                    transform: "rotate(10deg)"
+                },
+                transition: "all .3s ease"
             },
-            onClick: ()=>alert("در تماس با پشتیبانی شیراز موبایل!"),
+            onClick: ()=>alert("پشتیبانی آنلاین شیراز موبایل"),
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ChatRounded$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/components/FloatingButton.tsx",
-                lineNumber: 30,
+                lineNumber: 28,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/shiraz-mobile-ui/src/components/FloatingButton.tsx",
-            lineNumber: 20,
+            lineNumber: 19,
             columnNumber: 7
         }, this)
     }, void 0, false, {
@@ -469,8 +589,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$sr
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$ProductGrid$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/src/components/ProductGrid.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/src/components/Footer.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$FloatingButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/src/components/FloatingButton.tsx [app-client] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module '../app/widgets/BannerSecion/BannerSection'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f40$mui$2f$joy$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/@mui/joy/Box/Box.js [app-client] (ecmascript) <export default as Box>");
 "use client";
+;
 ;
 ;
 ;
@@ -488,33 +614,38 @@ function HomePage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-                lineNumber: 14,
+                lineNumber: 17,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$HeroSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-                lineNumber: 15,
+                lineNumber: 18,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(BannerSection, {}, void 0, false, {
+                fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
+                lineNumber: 20,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$ProductGrid$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-                lineNumber: 16,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-                lineNumber: 17,
+                lineNumber: 22,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$src$2f$components$2f$FloatingButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-                lineNumber: 18,
+                lineNumber: 23,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/shiraz-mobile-ui/src/app/page.tsx",
-        lineNumber: 13,
+        lineNumber: 16,
         columnNumber: 5
     }, this);
 }

@@ -1,34 +1,61 @@
 "use client";
 
-import { Grid, Card, Typography, AspectRatio, Button } from "@mui/joy";
+import { Grid, Card, CardContent, Typography } from "@mui/joy";
 import { motion } from "framer-motion";
 
 const products = [
-  { id: 1, name: "Samsung Galaxy S24", price: "45,000,000", img: "/images/s24.jpg" },
-  { id: 2, name: "iPhone 15 Pro", price: "70,000,000", img: "/images/iphone15.jpg" },
-  { id: 3, name: "Xiaomi 14 Ultra", price: "39,500,000", img: "/images/xiaomi14.jpg" },
-  { id: 4, name: "Nokia X30", price: "28,000,000", img: "/images/nokiaX30.jpg" }
+  { id: 1, title: "کاور سیلیکونی آیفون", price: "210,000 تومان", image: "/assets/cover1.png" },
+  { id: 2, title: "محافظ گوشی سامسونگ", price: "150,000 تومان", image: "/assets/protector1.png" },
+  { id: 3, title: "هندزفری بلوتوث", price: "460,000 تومان", image: "/assets/earbuds.png" },
+  { id: 4, title: "شارژر سریع 25 وات", price: "320,000 تومان", image: "/assets/charger.png" },
 ];
 
 export default function ProductGrid() {
   return (
-    <Grid container spacing={2} sx={{ p: 3 }}>
-      {products.map((product) => (
-        <Grid xs={12} sm={6} md={3} key={product.id}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}>
-            <Card variant="outlined" sx={{ transition: "0.3s", "&:hover": { boxShadow: "lg" } }}>
-              <AspectRatio ratio="1">
-                <img src={product.img} alt={product.name} />
-              </AspectRatio>
-              <Typography level="title-md" sx={{ mt: 1 }}>
-                {product.name}
+    <Grid
+      container
+      spacing={3}
+      sx={{ p: { xs: 2, md: 6 }, justifyContent: "center" }}
+      component={motion.div}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ staggerChildren: 0.15 }}
+    >
+      {products.map((p) => (
+        <Grid xs={12} sm={6} md={3} key={p.id}>
+          <Card
+            component={motion.div}
+            whileHover={{
+              scale: 1.04,
+              boxShadow: "0 10px 25px rgba(230,0,35,0.2)",
+            }}
+            transition={{ type: "spring", stiffness: 300 }}
+            sx={{
+              cursor: "pointer",
+              overflow: "hidden",
+              borderRadius: "lg",
+              bgcolor: "#fff",
+            }}
+          >
+            <img
+              src={p.image}
+              alt={p.title}
+              style={{
+                width: "100%",
+                height: 180,
+                objectFit: "contain",
+              }}
+            />
+            <CardContent>
+              <Typography level="body-lg" sx={{ fontWeight: 600, mb: 1 }}>
+                {p.title}
               </Typography>
-              <Typography color="neutral" sx={{ mb: 1 }}>
-                {product.price} تومان
+              <Typography level="body-sm" sx={{ color: "text.secondary" }}>
+                {p.price}
               </Typography>
-              <Button size="sm" color="primary">افزودن به سبد</Button>
-            </Card>
-          </motion.div>
+            </CardContent>
+          </Card>
         </Grid>
       ))}
     </Grid>
