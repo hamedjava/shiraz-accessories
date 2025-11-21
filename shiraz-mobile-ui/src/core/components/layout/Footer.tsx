@@ -1,79 +1,101 @@
-import { Logo } from '@/core/components/ui/Logo';
-import { Instagram, Send, Twitter } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { Logo } from "@/core/components/ui/Logo";
+import { Instagram, Send, Phone, MapPin, Mail } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-brand-teal text-white pt-20 pb-10 rounded-t-[3rem] mt-20">
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+    <footer className="bg-brand-dark text-gray-300 mt-20 border-t border-gray-800">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           
-          {/* ستون برند - 4 واحد */}
-          <div className="md:col-span-4 space-y-6">
-            <div className="bg-white p-4 rounded-2xl w-fit">
-               <Logo className="!text-brand-teal" />
+          {/* ستون اول: درباره ما */}
+          <div className="space-y-6">
+            {/* لوگوی سفارشی برای فوتر با رنگ روشن */}
+            <div className="flex items-center gap-2 select-none">
+                <div className="w-8 h-8 bg-brand-yellow rounded-lg flex items-center justify-center rotate-3">
+                    <span className="font-black text-brand-dark text-lg">S</span>
+                </div>
+                <div className="flex flex-col leading-none">
+                    <span className="font-black text-xl text-white tracking-tighter">SHIRAZ</span>
+                    <span className="text-[10px] font-bold text-brand-dark tracking-widest uppercase bg-brand-yellow px-1 rounded-sm mt-[2px]">
+                    Mobile
+                    </span>
+                </div>
             </div>
-            <p className="text-gray-300 leading-relaxed text-sm text-justify">
-              شیراز موبایل، تلفیقی از تکنولوژی روز و اصالت. ما اینجا هستیم تا اکسسوری‌های موبایل را نه به عنوان یک ابزار، بلکه به عنوان بخشی از استایل شما ارائه دهیم.
+            
+            <p className="text-sm leading-relaxed text-gray-400">
+              مرجع تخصصی لوازم جانبی موبایل در شیراز. ارائه دهنده بهترین کیفیت با ضمانت اصالت کالا و ارسال سریع به سراسر کشور.
             </p>
-            <div className="flex gap-4 pt-4">
-              {[Instagram, Twitter, Send].map((Icon, i) => (
-                <a key={i} href="#" className="p-3 bg-white/10 rounded-full hover:bg-brand-yellow hover:text-brand-teal transition-all duration-300">
-                  <Icon className="w-5 h-5" />
-                </a>
-              ))}
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-dark transition-all">
+                <Instagram size={20} />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-dark transition-all">
+                <Send size={20} />
+              </a>
             </div>
           </div>
 
-          {/* لینک‌های سریع - 4 واحد */}
-          <div className="md:col-span-4 flex justify-around">
-            <div className="space-y-4">
-              <h4 className="text-brand-yellow font-bold text-lg">دسترسی سریع</h4>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                {['محصولات جدید', 'پرفروش‌ترین‌ها', 'تخفیفات ویژه', 'وبلاگ'].map(item => (
-                  <li key={item}><a href="#" className="hover:text-brand-yellow transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-brand-yellow font-bold text-lg">پشتیبانی</h4>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                {['پیگیری سفارش', 'شرایط مرجوعی', 'تماس با ما', 'قوانین'].map(item => (
-                  <li key={item}><a href="#" className="hover:text-brand-yellow transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
+          {/* ستون دوم: دسترسی سریع */}
+          <div>
+            <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+              دسترسی سریع
+              <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-brand-yellow rounded-full"></span>
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/products" className="hover:text-brand-yellow transition-colors">همه محصولات</Link></li>
+              <li><Link href="/about" className="hover:text-brand-yellow transition-colors">درباره ما</Link></li>
+              <li><Link href="/contact" className="hover:text-brand-yellow transition-colors">تماس با ما</Link></li>
+              <li><Link href="/faq" className="hover:text-brand-yellow transition-colors">سوالات متداول</Link></li>
+              <li><Link href="/terms" className="hover:text-brand-yellow transition-colors">قوانین و مقررات</Link></li>
+            </ul>
           </div>
 
-          {/* نماد اعتماد و خبرنامه - 4 واحد */}
-          <div className="md:col-span-4 space-y-6">
-             <h4 className="text-brand-yellow font-bold text-lg">اعتماد شما، اعتبار ماست</h4>
-             <div className="bg-white/5 p-6 rounded-3xl backdrop-blur-sm border border-white/10 flex items-center justify-around">
-                {/* جایگاه نماد اعتماد (اینماد) */}
-                <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center text-xs text-gray-400 text-center shadow-lg cursor-pointer hover:scale-105 transition-transform">
-                  ENAMAD
-                </div>
-                <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center text-xs text-gray-400 text-center shadow-lg cursor-pointer hover:scale-105 transition-transform">
-                  SAMANDEHI
-                </div>
-             </div>
-             
-             <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="ایمیل خود را وارد کنید..." 
-                  className="w-full bg-white/10 border border-white/20 rounded-xl py-3 px-4 text-white placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow"
-                />
-                <button className="absolute left-2 top-2 bottom-2 bg-brand-yellow text-brand-teal px-4 rounded-lg font-bold text-sm hover:bg-white transition-colors">
-                  عضویت
-                </button>
-             </div>
+          {/* ستون سوم: محصولات */}
+          <div>
+            <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+              دسته‌بندی‌ها
+              <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-brand-yellow rounded-full"></span>
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/category/iphone" className="hover:text-brand-yellow transition-colors">قاب آیفون</Link></li>
+              <li><Link href="/category/samsung" className="hover:text-brand-yellow transition-colors">لوازم جانبی سامسونگ</Link></li>
+              <li><Link href="/category/chargers" className="hover:text-brand-yellow transition-colors">شارژر و کابل</Link></li>
+              <li><Link href="/category/audio" className="hover:text-brand-yellow transition-colors">هدفون و اسپیکر</Link></li>
+              <li><Link href="/category/powerbank" className="hover:text-brand-yellow transition-colors">پاوربانک</Link></li>
+            </ul>
+          </div>
+
+          {/* ستون چهارم: تماس */}
+          <div>
+            <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+              تماس با ما
+              <span className="absolute -bottom-2 right-0 w-1/2 h-1 bg-brand-yellow rounded-full"></span>
+            </h3>
+            <ul className="space-y-4 text-sm">
+              <li className="flex items-start gap-3">
+                <MapPin className="text-brand-yellow shrink-0" size={20} />
+                <span>شیراز، خیابان ملاصدرا، پاساژ دنا، طبقه دوم، پلاک ۲۱۰</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="text-brand-yellow shrink-0" size={20} />
+                <span dir="ltr">+98 71 3232 0000</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="text-brand-yellow shrink-0" size={20} />
+                <span>info@shirazmobile.ir</span>
+              </li>
+            </ul>
           </div>
 
         </div>
-        
-        <div className="border-t border-white/10 mt-16 pt-8 text-center text-gray-400 text-sm flex flex-col md:flex-row justify-between items-center">
-           <p>© ۱۴۰۳ تمامی حقوق برای شیراز موبایل محفوظ است.</p>
-           <p className="mt-2 md:mt-0">طراحی شده با ❤️ و Next.js</p>
+      </div>
+
+      {/* کپی رایت */}
+      <div className="bg-black/30 py-4 border-t border-white/5">
+        <div className="container mx-auto px-4 text-center text-xs text-gray-500">
+          © ۱۴۰۳ تمامی حقوق برای شیراز موبایل محفوظ است. طراحی شده با ❤️
         </div>
       </div>
     </footer>

@@ -1,28 +1,23 @@
-// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/modules/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/core/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         brand: {
-          yellow: '#FACC15', // زرد اصلی (پر انرژی)
-          teal: '#0F766E',   // سبز کله‌غازی (لوکس و قابل اعتماد)
-          dark: '#111827',   // مشکی خیلی نرم برای متون
-          light: '#F9FAFB',  // سفید مایل به خاکستری برای پس‌زمینه
-        }
+          yellow: "#FFC107", // زرد طلایی پررنگ (اصلی)
+          dark: "#1A1A1A",   // مشکی ذغالی (برای فوتر و هدر)
+          gray: "#F5F5F5",   // طوسی روشن (پس زمینه)
+          teal: "#00897B",   // رنگ فرعی (برای تنوع جزئی)
+        },
       },
-      fontFamily: {
-        // فرض بر این است که بعدا فونت فارسی وزیر یا یکان را اضافه می‌کنید
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-      }
+      container: {
+        center: true,
+        padding: "1rem",
+      },
     },
   },
   plugins: [],

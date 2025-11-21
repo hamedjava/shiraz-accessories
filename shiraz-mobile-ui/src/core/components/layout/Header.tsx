@@ -1,84 +1,104 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { ShoppingBag, Search, Menu, User } from 'lucide-react';
-import { Logo } from '@/core/components/ui/Logo';
-import Link from 'next/link';
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { Logo } from "@/core/components/ui/Logo";
+import { Search, ShoppingBag, User, Menu, X } from "lucide-react";
 
 export const Header = () => {
-  const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  // منطق هوشمند برای پنهان کردن هدر هنگام اسکرول به پایین و نمایش هنگام بالا آمدن
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
-    setScrolled(latest > 50);
-  });
+  // بستن سرچ با کلیک بیرون
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+    if (isSearchOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSearchOpen]);
 
   return (
-    <motion.header
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: "-120%" },
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 transition-all duration-300 px-4`}
-    >
-      {/* کانتینر شناور هدر */}
-      <div 
-        className={`
-          flex items-center justify-between 
-          w-full max-w-6xl 
-          px-6 py-3 
-          rounded-2xl 
-          transition-all duration-300
-          ${scrolled 
-            ? "bg-white/80 backdrop-blur-md shadow-lg border border-gray-200/50 py-2" 
-            : "bg-transparent py-4"
-          }
-        `}
-      >
-        {/* بخش راست: منو و سرچ */}
-        <div className="flex items-center gap-4">
-           <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <Menu className="w-6 h-6 text-brand-teal" />
-          </button>
-          <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full text-sm text-gray-500 hover:bg-gray-100 transition-colors">
-            <Search className="w-4 h-4" />
-            <span>جستجو...</span>
-          </button>
-        </div>
-
-        {/* لوگو در مرکز */}
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <Logo />
-        </div>
-
-        {/* بخش چپ: اکشن‌ها */}
-        <div className="flex items-center gap-3">
-          <Link href="/auth" className="hidden md:flex items-center gap-2 text-sm font-medium text-brand-teal hover:text-brand-yellow transition-colors">
-            <span>ورود</span>
-            <User className="w-5 h-5" />
-          </Link>
+    <>
+      <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100 h-[72px]">
+        <div className="container h-full mx-auto px-4 flex items-center justify-between">
           
-          <div className="relative group">
-            <button className="p-3 bg-brand-teal text-white rounded-xl hover:bg-brand-yellow hover:text-brand-teal transition-all duration-300 shadow-lg shadow-brand-teal/20">
-              <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-yellow text-brand-teal text-[10px] font-bold flex items-center justify-center rounded-full border border-white">
-                2
-              </span>
+          {/* سمت راست: لوگو */}
+          <Link href="/" className="hover:opacity-90 transition-opacity z-20">
+            <Logo />
+          </Link>
+
+          {/* وسط: نوار جستجو (دسکتاپ) */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-8 relative" ref={searchRef}>
+            <div 
+              onClick={() => setIsSearchOpen(true)}
+              className={`w-full h-11 flex items-center gap-3 px-4 bg-gray-50 border border-gray-200 rounded-full transition-all cursor-text ${isSearchOpen ? 'ring-2 ring-brand-yellow border-transparent bg-white' : 'hover:bg-gray-100'}`}
+            >
+              <Search className={`w-5 h-5 ${isSearchOpen ? 'text-brand-yellow' : 'text-gray-400'}`} />
+              {isSearchOpen ? (
+                <input 
+                  autoFocus
+                  type="text" 
+                  placeholder="جستجو..." 
+                  className="flex-1 bg-transparent border-none outline-none text-sm text-right"
+                />
+              ) : (
+                <span className="text-sm text-gray-400">جستجو در محصولات...</span>
+              )}
+            </div>
+            
+            {/* نتایج جستجو (نمایشی) */}
+            {isSearchOpen && (
+              <div className="absolute top-full mt-2 left-0 w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-4 min-h-[200px] animate-pulse z-50">
+                <p className="text-xs text-gray-400 mb-2">عبارات محبوب:</p>
+                <div className="flex flex-wrap gap-2">
+                  {['قاب آیفون 13', 'شارژر سامسونگ', 'هندزفری'].map(tag => (
+                    <span key={tag} className="px-3 py-1 bg-gray-100 rounded-md text-xs text-gray-600 cursor-pointer hover:bg-brand-yellow hover:text-black transition-colors">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* سمت چپ: دکمه‌ها */}
+          <div className="flex items-center gap-2">
+            <Link href="/cart" className="p-2.5 hover:bg-gray-50 rounded-full relative group transition-colors">
+              <ShoppingBag className="w-6 h-6 text-gray-700 group-hover:text-brand-yellow transition-colors" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-brand-yellow rounded-full"></span>
+            </Link>
+            
+            <Link href="/auth/login" className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 border border-transparent hover:border-gray-200">
+              <User className="w-5 h-5" />
+              <span>ورود</span>
+            </Link>
+
+            {/* دکمه منوی موبایل */}
+            <button 
+              className="md:hidden p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
         </div>
-      </div>
-    </motion.header>
+      </header>
+
+      {/* منوی موبایل */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-white pt-20 px-4 md:hidden">
+          <nav className="flex flex-col gap-4 text-lg font-medium">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">خانه</Link>
+            <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">محصولات</Link>
+            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">درباره ما</Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-2 border-b">تماس با ما</Link>
+          </nav>
+        </div>
+      )}
+    </>
   );
 };
