@@ -2,7 +2,6 @@ module.exports = [
 "[project]/shiraz-mobile-ui/src/app/layout.tsx [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// src/app/layout.tsx
 __turbopack_context__.s([
     "default",
     ()=>RootLayout,
@@ -10,44 +9,26 @@ __turbopack_context__.s([
     ()=>metadata
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/shiraz-mobile-ui/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)");
-(()=>{
-    const e = new Error("Cannot find module '@/components/ThemeRegistry'");
-    e.code = 'MODULE_NOT_FOUND';
-    throw e;
-})();
-;
 ;
 ;
 const metadata = {
-    title: "Shiraz Mobile | فروشگاه لوازم موبایل",
-    description: "فروشگاه آنلاین شیراز موبایل - لوازم جانبی، قاب، محافظ، هندزفری و ..."
+    title: "Shiraz Mobile",
+    description: "Premium Mobile Accessories"
 };
 function RootLayout({ children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("html", {
         lang: "fa",
         dir: "rtl",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("body", {
-            style: {
-                margin: 0,
-                padding: 0,
-                fontFamily: "IRANSans, sans-serif",
-                backgroundColor: "#f5f5f7"
-            },
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$shiraz$2d$mobile$2d$ui$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ThemeRegistry, {
-                children: children
-            }, void 0, false, {
-                fileName: "[project]/shiraz-mobile-ui/src/app/layout.tsx",
-                lineNumber: 29,
-                columnNumber: 9
-            }, this)
+            children: children
         }, void 0, false, {
             fileName: "[project]/shiraz-mobile-ui/src/app/layout.tsx",
-            lineNumber: 20,
+            lineNumber: 16,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/shiraz-mobile-ui/src/app/layout.tsx",
-        lineNumber: 19,
+        lineNumber: 15,
         columnNumber: 5
     }, this);
 }

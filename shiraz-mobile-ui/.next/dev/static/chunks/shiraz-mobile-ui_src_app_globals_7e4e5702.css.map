@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///F:/shirazMobile/shiraz-mobile-ui/src/app/globals.css"],"sourcesContent":["/* src/app/globals.css */\r\n\r\n/* Reset base styles */\r\n* {\r\n    box-sizing: border-box;\r\n    margin: 0;\r\n    padding: 0;\r\n  }\r\n  \r\n  html,\r\n  body {\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: #f5f5f7;\r\n    color: #111;\r\n    font-family: \"IRANSans\", sans-serif;\r\n    direction: rtl;\r\n  }\r\n  \r\n  a {\r\n    color: inherit;\r\n    text-decoration: none;\r\n  }\r\n  "],"names":[],"mappings":"AAGA;;;;;;AAME;;;;;;;;;AAUA","debugId":null}}]
-}

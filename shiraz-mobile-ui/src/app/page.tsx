@@ -1,53 +1,29 @@
-"use client";
+import { Header } from "@/core/components/layout/Header";
+import { Footer } from "@/core/components/layout/Footer";
+import { HeroSection } from "@/modules/home/presentation/components/HeroSection";
 
-import { Box } from "@mui/joy";
-
-// 🔹 نوار تبلیغات بالای صفحه (اسلایدی و انیمیشنی)
-import BannerPromo from "../components/BannerPromo/BannerPromo";
-
-// 🔹 نوار جستجو با انیمیشن متمایز
-import SearchBar from "../components/SearchBar/SearchBar";
-
-// 🔹 سکشن اصلی معرفی کسب‌وکار (Hero Section)
-import HeroSection from "../components/HeroSection";
-
-// 🔹 بنر تبلیغاتی ثانویه (نمایش عکس تبلیغی یا برند مارکت‌پلیس)
-import BannerSection from "../app/widgets/BannerSecion/BannerSection";
-
-// 🔹 گرید محصولات / پیشنهادات ویژه
-import ProductGrid from "../components/ProductGrid";
-
-// 🔹 دکمه شناور پشتیبانی
-import FloatingButton from "../components/FloatingButton";
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        bgcolor: "background.body",
-        overflowX: "hidden",
-      }}
-    >
-      {/* 🔸 نوار تبلیغی بالای صفحه */}
-      <BannerPromo />
+    <main className="bg-white min-h-screen selection:bg-brand-yellow selection:text-brand-teal">
+      {/* هدر گلوبال */}
+      <Header />
+      
+      {/* محتوای صفحه */}
+      <div className="flex flex-col gap-20">
+        
+        {/* بخش هیرو (بنر اصلی) */}
+        <HeroSection />
+        
+        {/* اینجا بعدا بخش‌های دیگر مثل محصولات پرفروش اضافه می‌شود */}
+        <section className="container mx-auto px-6 py-10 text-center">
+          <p className="text-gray-400 text-sm uppercase tracking-widest">اسکرول کنید تا شگفتی‌های بیشتر را ببینید</p>
+          <div className="w-[1px] h-20 bg-gradient-to-b from-gray-200 to-transparent mx-auto mt-6" />
+        </section>
 
-      {/* 🔸 نوار جستجو واکنش‌گرا */}
-      <SearchBar />
+      </div>
 
-      {/* 🔸 سکشن اصلی معرفی محصولات / برند */}
-      <HeroSection />
-
-      {/* 🔸 بنر تبلیغاتی (ثانویه یا کمپین‌ها) */}
-      <BannerSection />
-
-      {/* 🔸 شبکه محصولات یا دسته‌بندی‌ها */}
-      <ProductGrid />
-
-      {/* 🔸 دکمه شناور برای پشتیبانی آنلاین */}
-      <FloatingButton />
-    </Box>
+      {/* فوتر گلوبال */}
+      <Footer />
+    </main>
   );
 }
