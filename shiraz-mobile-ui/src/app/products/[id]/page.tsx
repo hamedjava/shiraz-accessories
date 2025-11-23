@@ -1,93 +1,146 @@
-import React from "react";
-import { ChevronLeft, Home } from "lucide-react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
+import { 
+  Filter, 
+  LayoutGrid, 
+  List, 
+  ChevronDown, 
+  SlidersHorizontal
+} from "lucide-react";
 
-// ۱. داده‌های فرضی محصول (بعداً از API می‌آید)
-const MOCK_PRODUCT = {
-  id: 1,
-  title: "کنسول بازی سونی مدل PlayStation 5 اسلیم ظرفیت یک ترابایت",
-  englishTitle: "Sony PlayStation 5 Slim 1TB Gaming Console",
-  price: 24500000,
-  oldPrice: 25800000,
-  discount: 5,
-  rating: 4.8,
-  reviewsCount: 124,
-  colors: [
-    { name: "سفید", code: "#ffffff", selected: true },
-    { name: "مشکی", code: "#222222", selected: false },
-  ],
-  guarantees: ["گارانتی ۱۸ ماهه شرکتی", "گارانتی اصالت و سلامت فیزیکی"],
-  images: [
-    "/ps5-1.jpg", // فرض بر این است که عکس دارید، اگر نه پلیس‌هولدر میگذاریم
-    "/ps5-2.jpg",
-    "/ps5-3.jpg"
-  ],
-  description: "پلی استیشن ۵ اسلیم با طراحی باریک‌تر و حافظه ۱ ترابایت SSD، تجربه‌ای بی‌نظیر از نسل نهم بازی‌ها را ارائه می‌دهد...",
-  specs: [
-    { label: "سازنده", value: "Sony" },
-    { label: "نوع درایو", value: "Blu-ray" },
-    { label: "ظرفیت", value: "1TB SSD" },
-  ]
-};
+// ایمپورت کامپوننت‌های جداگانه برای تمیزی کد
+import { ProductCard } from "@/core/components/product/ProductCard";
+import { ProductFilters } from "@/modules/product/presentation/components/ProductFilters"; 
 
-// ۲. کامپوننت ساده بردکرامب (مسیر نان)
-const Breadcrumb = () => (
-  <div className="flex items-center gap-2 text-xs text-slate-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
-    <Link href="/" className="hover:text-slate-900 transition-colors"><Home size={14} /></Link>
-    <ChevronLeft size={12} />
-    <Link href="/category/gaming" className="hover:text-slate-900 transition-colors">کنسول بازی</Link>
-    <ChevronLeft size={12} />
-    <span className="text-slate-800 font-medium truncate max-w-[200px]">{MOCK_PRODUCT.title}</span>
-  </div>
-);
+// --- MOCK DATA (اصلاح شده با اضافه شدن تصویر) ---
+const PRODUCTS = Array.from({ length: 8 }).map((_, i) => ({
+  id: i + 1,
+  title: i % 2 === 0 ? "گوشی موبایل سامسونگ Galaxy S24 Ultra" : "هدفون بی‌سیم سونی مدل WH-1000XM5",
+  model: i % 2 === 0 ? "256GB - ویتنام" : "Noise Cancelling",
+  price: i % 2 === 0 ? "۶۵,۵۰۰,۰۰۰" : "۱۲,۵۰۰,۰۰۰",
+  image: "/placeholder.png", // اضافه شد تا کارت بدون عکس نماند
+  isNew: i < 3,
+}));
 
-// ۳. صفحه اصلی محصول
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductsPage() {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false); // برای مدیریت فیلتر موبایل
+
   return (
-    <main className="min-h-screen bg-white pb-20">
-      <div className="container mx-auto px-4 py-8">
-        
-        {/* مسیر صفحه */}
-        <Breadcrumb />
-
-        {/* گرید اصلی صفحه: در دسکتاپ دو ستون، در موبایل یک ستون */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          
-          {/* ستون راست (چپ در RTL): گالری تصاویر */}
-          {/* در دسکتاپ ۵ ستون از ۱۲ ستون را می‌گیرد */}
-          <div className="lg:col-span-5">
-            <div className="bg-slate-100 rounded-3xl aspect-square flex items-center justify-center text-slate-400 border-2 border-dashed border-slate-200">
-              {/* اینجا بعداً ProductGallery قرار می‌گیرد */}
-              <p>محل قرارگیری گالری تصاویر</p>
+    <div className="min-h-screen bg-[#F8F9FA] pb-20">
+      
+      {/* --- HEADER SECTION --- */}
+      <div className="bg-white border-b border-slate-200 shadow-sm">
+        <div className="container mx-auto px-4 py-8 md:py-10">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+              <Link href="/" className="hover:text-slate-800 transition-colors">خانه</Link>
+              <span>/</span>
+              <span className="text-slate-800 font-bold">محصولات</span>
             </div>
+            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+              فروشگاه محصولات
+            </h1>
+            <p className="text-slate-500 text-sm max-w-2xl leading-relaxed">
+              جدیدترین محصولات دیجیتال را با بهترین قیمت بررسی و مقایسه کنید. تضمین اصالت و بهترین قیمت بازار.
+            </p>
           </div>
-
-          {/* ستون چپ (راست در RTL): اطلاعات محصول */}
-          {/* در دسکتاپ ۷ ستون از ۱۲ ستون را می‌گیرد */}
-          <div className="lg:col-span-7">
-             <div className="bg-slate-50 rounded-3xl h-full p-8 border border-slate-100">
-                {/* اینجا بعداً ProductInfo قرار می‌گیرد */}
-                <h1 className="text-2xl font-bold text-slate-900 mb-2">{MOCK_PRODUCT.title}</h1>
-                <p className="text-slate-400 text-sm mb-6">{MOCK_PRODUCT.englishTitle}</p>
-                <div className="p-4 bg-white rounded-xl border border-slate-200 border-dashed">
-                    محل قرارگیری قیمت، رنگ و دکمه خرید
-                </div>
-             </div>
-          </div>
-
         </div>
-
-        {/* بخش تب‌ها و توضیحات (پایین صفحه) */}
-        <div className="mt-16">
-             <div className="bg-white border-t border-slate-100 pt-10">
-                <h3 className="text-xl font-bold text-slate-800 mb-6">مشخصات و توضیحات</h3>
-                <div className="bg-slate-50 rounded-3xl h-60 flex items-center justify-center text-slate-400 border border-slate-100">
-                    محل قرارگیری تب‌های توضیحات و نظرات
-                </div>
-             </div>
-        </div>
-
       </div>
-    </main>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* --- SIDEBAR FILTERS --- */}
+          {/* در دسکتاپ ۳ ستون را می‌گیرد و در موبایل مخفی است (یا می‌توان مودال باز کرد) */}
+          <aside className="hidden lg:block lg:col-span-3">
+            <ProductFilters />
+          </aside>
+
+          {/* --- MAIN CONTENT --- */}
+          <main className="lg:col-span-9">
+            
+            {/* Toolbar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sticky top-4 z-30 bg-white/80 backdrop-blur-md p-3 rounded-2xl border border-white/50 shadow-sm ring-1 ring-slate-900/5">
+              
+              {/* Mobile Filter Trigger */}
+              <button 
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden flex items-center justify-center gap-2 text-white font-bold text-sm bg-slate-900 px-4 py-3 rounded-xl w-full sm:w-auto hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
+              >
+                <SlidersHorizontal size={18} />
+                فیلتر پیشرفته
+              </button>
+
+              {/* Sort Options */}
+              <div className="flex items-center gap-2 text-sm text-slate-500 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide w-full sm:w-auto px-2 sm:px-0">
+                <span className="whitespace-nowrap font-bold text-slate-700 hidden sm:inline">مرتب‌سازی:</span>
+                {['پربازدیدترین', 'جدیدترین', 'ارزان‌ترین', 'گران‌ترین'].map((sort, idx) => (
+                  <button 
+                    key={idx} 
+                    className={`whitespace-nowrap px-3 py-1.5 rounded-lg transition-all text-xs sm:text-sm ${
+                      idx === 1 
+                      ? 'bg-yellow-500 text-white font-bold shadow-md shadow-yellow-500/30' 
+                      : 'hover:bg-slate-100 text-slate-600 font-medium'
+                    }`}
+                  >
+                    {sort}
+                  </button>
+                ))}
+              </div>
+
+              {/* View Toggle (Desktop) */}
+              <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl ml-auto sm:ml-0">
+                <button 
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                  title="نمایش شبکه‌ای"
+                >
+                  <LayoutGrid size={18} />
+                </button>
+                <button 
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                  title="نمایش لیستی"
+                >
+                  <List size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Products Grid / List Logic */}
+            <div className={
+              viewMode === "grid" 
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                : "flex flex-col gap-4" // حالت لیستی
+            }>
+              {PRODUCTS.map((product) => (
+                <div key={product.id} className={viewMode === 'list' ? 'w-full' : ''}>
+                   {/* در حالت لیست، می‌توانیم استایل متفاوتی به کارت بدهیم یا همان کارت را استفاده کنیم */}
+                   <ProductCard product={product} /> 
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination / Load More */}
+            <div className="mt-16 flex flex-col items-center gap-4">
+              <span className="text-slate-400 text-xs font-medium">
+                نمایش ۸ از ۱۲۴ محصول
+              </span>
+              <div className="w-64 h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="w-8 h-full bg-yellow-500 rounded-full"></div>
+              </div>
+              <button className="px-8 py-3 mt-2 rounded-xl border-2 border-slate-200 text-slate-600 font-bold hover:border-yellow-500 hover:text-slate-900 transition-all flex items-center gap-2 group">
+                مشاهده محصولات بیشتر
+                <ChevronDown size={18} className="group-hover:translate-y-1 transition-transform" />
+              </button>
+            </div>
+
+          </main>
+        </div>
+      </div>
+    </div>
   );
 }
