@@ -1,96 +1,143 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Zap, Shield, Headphones } from "lucide-react";
+import { ArrowLeft, Play, Star, Zap } from "lucide-react";
 
-export const Hero = () => {
+export const HeroSection = () => {
   return (
-    <section className="relative bg-gray-50 py-6 lg:py-10 overflow-hidden">
-      <div className="container mx-auto px-4">
-        
-        {/* === Main Banner === */}
-        <div className="relative bg-brand-dark rounded-3xl overflow-hidden shadow-2xl min-h-[400px] lg:min-h-[500px] flex items-center">
-          
-          {/* Background Pattern */}
-          <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
-             <div className="absolute right-[-10%] top-[-50%] w-[500px] h-[500px] bg-brand-yellow rounded-full blur-[100px]" />
-             <div className="absolute left-[-10%] bottom-[-50%] w-[400px] h-[400px] bg-brand-yellow rounded-full blur-[100px]" />
-          </div>
+    <section className="relative w-full min-h-[85vh] flex items-center bg-white overflow-hidden selection:bg-yellow-500 selection:text-white">
+      
+      {/* --- Background Elements --- */}
+      <div className="absolute inset-0 z-0 opacity-[0.03]" 
+           style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+      </div>
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-yellow-500/20 rounded-full blur-[120px] opacity-60 animate-pulse duration-[5000ms]" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-slate-200 rounded-full blur-[100px] opacity-80" />
 
-          {/* Content Container */}
-          <div className="grid lg:grid-cols-2 gap-8 w-full h-full relative z-10 p-8 lg:p-16 items-center">
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+
+          {/* ============================================================ */}
+          {/*           بخش متنی (Typography) - اصلاح شده                 */}
+          {/* ============================================================ */}
+          <div className="w-full lg:w-1/2 flex flex-col items-start text-right z-20 pr-4 lg:pr-0">
             
-            {/* Text Content */}
-            <div className="text-center lg:text-right space-y-6 order-2 lg:order-1">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-brand-yellow rounded-full text-xs font-bold border border-white/10 backdrop-blur-sm">
-                <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse"></span>
-                جشنواره پاییزه ۱۴۰۳
-              </div>
+            {/* Badge */}
+            <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-yellow-50 border border-yellow-100/60">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+              </span>
+              <span className="text-[11px] font-bold text-yellow-700/90 tracking-wider uppercase">
+                NEW COLLECTION
+              </span>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-5xl lg:text-7xl font-black text-slate-900 leading-[1.15] tracking-tight mb-6">
+              تجربه صدای <br />
+              <span className="text-yellow-500 relative inline-block">
+                 شفاف و بی‌نهایت
+                 <span className="absolute bottom-2 right-0 w-full h-3 bg-yellow-200/30 -z-10 -skew-x-12 rounded-sm"></span>
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg text-slate-500 font-medium leading-8 max-w-[520px] mb-8">
+              با جدیدترین تکنولوژی حذف نویز، سکوت را لمس کنید. طراحی ارگونومیک برای استفاده طولانی مدت بدون خستگی.
+            </p>
+
+            {/* === Buttons Area (تغییر یافته: بازگشت استایل ویدیو به قبل) === */}
+            <div className="flex flex-wrap items-center gap-8 mb-10 w-full">
               
-              <h1 className="text-4xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                خاص باش، <br/>
-                <span className="text-brand-yellow">هوشمند</span> انتخاب کن!
-              </h1>
+              {/* 1. Main CTA Button */}
+              <Link 
+                href="/products" 
+                className="h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold text-lg flex items-center justify-center gap-3 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200/50 active:scale-95"
+              >
+                خرید محصول
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
               
-              <p className="text-gray-400 text-lg lg:w-4/5 leading-relaxed">
-                مجموعه‌ای بی‌نظیر از لوازم جانبی موبایل با کیفیت اورجینال. 
-                گارانتی بازگشت وجه و ارسال به سراسر ایران.
-              </p>
+              {/* 2. Video Preview Component (سبک قبلی) */}
+              <div className="flex items-center gap-4 cursor-pointer group">
+                 {/* کادر تصویر/تامنیل ویدیو */}
+                 <div className="relative w-16 h-16 rounded-2xl bg-slate-200 overflow-hidden shadow-sm border border-slate-100">
+                    {/* بک‌گراند برای تامنیل (در واقعیت اینجا عکس قرار می‌گیرد) */}
+                    <div className="absolute inset-0 bg-slate-300 group-hover:scale-110 transition-transform duration-500" />
+                    
+                    {/* دکمه Play روی عکس */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <Play className="w-3 h-3 fill-slate-900 text-slate-900 ml-0.5" />
+                        </div>
+                    </div>
+                 </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                <Link href="/products" className="px-8 py-4 bg-brand-yellow text-brand-dark rounded-xl font-bold hover:bg-white hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(251,191,36,0.4)]">
-                  خرید کنید
-                  <ArrowLeft className="w-5 h-5" />
-                </Link>
-                <Link href="/about" className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center">
-                  مشاوره رایگان
-                </Link>
+                 {/* متن کنار ویدیو */}
+                 <div className="flex flex-col text-right">
+                    <span className="text-sm font-black text-slate-800 group-hover:text-yellow-600 transition-colors">
+                        بررسی ویدئویی
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-medium mt-0.5">
+                        مشاهده عملکرد (۰۲:۱۵)
+                    </span>
+                 </div>
               </div>
             </div>
 
-            {/* Image PlaceHolder (جای عکس محصول) */}
-            <div className="order-1 lg:order-2 flex justify-center relative">
-               {/* دایره پشت عکس */}
-               <div className="absolute inset-0 bg-gradient-to-tr from-brand-yellow/20 to-transparent rounded-full blur-2xl scale-75"></div>
-               
-               {/* اینجا عکس محصول را قرار دهید */}
-               {/* <Image src="/images/hero-product.png" ... /> */}
-               <div className="w-full max-w-md aspect-square bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm flex items-center justify-center text-gray-500">
-                  <p>محل قرارگیری تصویر محصول شاخص (PNG بدون پس زمینه)</p>
-               </div>
+            {/* Stats Footer */}
+            <div className="w-full border-t border-slate-100 pt-6 flex items-center justify-start gap-2 sm:gap-6 lg:gap-8">
+                {/* Rating */}
+                <div className="flex flex-col items-start gap-1">
+                    <div className="flex text-yellow-400 space-x-0.5 space-x-reverse">
+                         {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
+                    </div>
+                    <span className="text-xs text-slate-400 font-bold mt-1 pr-1">۴.۹ از ۵ (۲۰۰+ نظر)</span>
+                </div>
+                <div className="w-px h-10 bg-slate-200 mx-2"></div>
+                {/* Customers */}
+                <div className="flex flex-col items-start">
+                    <span className="text-2xl font-black text-slate-800 tabular-nums">+10k</span>
+                    <span className="text-xs text-slate-400 font-medium">مشتری فعال</span>
+                </div>
+                <div className="w-px h-10 bg-slate-200 mx-2"></div>
+                {/* Guarantee */}
+                <div className="flex flex-col items-start pl-2">
+                    <span className="text-2xl font-black text-slate-800 tabular-nums">+۱۵</span>
+                    <span className="text-xs text-slate-400 font-medium">سال گارانتی</span>
+                </div>
             </div>
           </div>
+
+
+          {/* ============================================================ */}
+          {/*             بخش تصویر (Hero Image) - ثابت                    */}
+          {/* ============================================================ */}
+          <div className="w-full lg:w-1/2 relative mt-10 lg:mt-0">
+             <div className="relative z-10 w-full aspect-square max-w-[550px] mx-auto">
+                <div className="absolute inset-4 border border-dashed border-slate-300 rounded-full animate-[spin_10s_linear_infinite]" />
+                <div className="w-full h-full relative flex items-center justify-center">
+                    <div className="relative w-[80%] h-[80%] bg-gradient-to-br from-slate-100 to-slate-200 rounded-[3rem] shadow-2xl shadow-slate-200/50 flex items-center justify-center transform hover:-rotate-3 transition-transform duration-500 cursor-pointer group">
+                        <div className="text-center opacity-40 group-hover:opacity-60 transition-opacity">
+                            <span className="text-8xl filter drop-shadow-xl block mb-4">🎧</span>
+                            <p className="font-bold text-slate-500 tracking-widest uppercase text-sm">Product Shot</p>
+                        </div>
+                        <div className="absolute -top-6 -right-6 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-white flex items-center gap-3 animate-bounce duration-[3000ms]">
+                            <div className="bg-yellow-500 p-2 rounded-xl text-black">
+                                <Zap size={20} fill="currentColor" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] text-slate-500 font-bold">فروش ویژه</p>
+                                <p className="text-sm font-black text-slate-900">۲۰٪ تخفیف</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+
         </div>
-
-        {/* === Features / Small Cards Below === */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-          {/* Card 1 */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-brand-yellow/50 transition-all hover:-translate-y-1 group">
-            <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-brand-yellow mb-4 group-hover:bg-brand-yellow group-hover:text-brand-dark transition-colors">
-              <Zap className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-lg text-gray-800 mb-2">ارسال فوق سریع</h3>
-            <p className="text-sm text-gray-500">تحویل زیر ۲ ساعت در شیراز و ۲۴ ساعت در کل کشور</p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-brand-yellow/50 transition-all hover:-translate-y-1 group">
-            <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-brand-yellow mb-4 group-hover:bg-brand-yellow group-hover:text-brand-dark transition-colors">
-              <Shield className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-lg text-gray-800 mb-2">ضمانت اصالت</h3>
-            <p className="text-sm text-gray-500">تمامی کالاها با گارانتی اصالت و سلامت فیزیکی عرضه می‌شوند</p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-brand-yellow/50 transition-all hover:-translate-y-1 group">
-            <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-brand-yellow mb-4 group-hover:bg-brand-yellow group-hover:text-brand-dark transition-colors">
-              <Headphones className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-lg text-gray-800 mb-2">پشتیبانی تخصصی</h3>
-            <p className="text-sm text-gray-500">مشاوره رایگان قبل از خرید برای انتخاب بهترین گزینه</p>
-          </div>
-        </div>
-
       </div>
     </section>
   );

@@ -2,8 +2,8 @@
   "pages": {},
   "app": {
     "[project]/shiraz-mobile-ui/src/app/_not-found/page": [
-      "static/media/f1d25eabcf1db66d-s.p.c041a43b.woff2",
-      "static/media/ec8f59eafded4799-s.p.bd0c2d26.woff2"
+      "static/media/yekan_normal-s.p.3134a2f5.ttf",
+      "static/media/yekan_bold-s.p.219984cb.ttf"
     ]
   },
   "appUsingSizeAdjust": true,
