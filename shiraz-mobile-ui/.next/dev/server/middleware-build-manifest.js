@@ -1,31 +1,6 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": [
-      "static/chunks/98636_next_dist_compiled_867db935._.js",
-      "static/chunks/98636_next_dist_shared_lib_d45f70b6._.js",
-      "static/chunks/98636_next_dist_client_2effdbba._.js",
-      "static/chunks/98636_next_dist_48c98825._.js",
-      "static/chunks/98636_next_app_d90fd4bd.js",
-      "static/chunks/[next]_entry_page-loader_ts_8e1eae80._.js",
-      "static/chunks/98636_react-dom_32cfd198._.js",
-      "static/chunks/98636_9f4f26ad._.js",
-      "static/chunks/[root-of-the-server]__25203792._.js",
-      "static/chunks/shiraz-mobile-ui_pages__app_2da965e7._.js",
-      "static/chunks/turbopack-shiraz-mobile-ui_pages__app_dd44be34._.js"
-    ],
-    "/_error": [
-      "static/chunks/98636_next_dist_compiled_867db935._.js",
-      "static/chunks/98636_next_dist_shared_lib_9da6e695._.js",
-      "static/chunks/98636_next_dist_client_2effdbba._.js",
-      "static/chunks/98636_next_dist_34990d93._.js",
-      "static/chunks/98636_next_error_5bc6455e.js",
-      "static/chunks/[next]_entry_page-loader_ts_28366b40._.js",
-      "static/chunks/98636_react-dom_32cfd198._.js",
-      "static/chunks/98636_9f4f26ad._.js",
-      "static/chunks/[root-of-the-server]__b731f06d._.js",
-      "static/chunks/shiraz-mobile-ui_pages__error_2da965e7._.js",
-      "static/chunks/turbopack-shiraz-mobile-ui_pages__error_29b3ad6a._.js"
-    ]
+    "/_app": []
   },
   "devFiles": [],
   "polyfillFiles": [

@@ -2,55 +2,51 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ShoppingBag, Heart } from "lucide-react";
+import { ShoppingBag, ArrowLeft, Star } from "lucide-react";
 
-// دیتای تستی
 const PRODUCTS = [
   {
     id: 1,
     title: "هدفون بی‌سیم سونی",
-    model: "WH-1000XM5",
+    model: "WH-1000XM5 - Noise Canceling",
     price: "۱۲,۵۰۰,۰۰۰",
+    rate: 4.8,
     image: "/placeholder.png",
     isNew: true,
   },
   {
     id: 2,
     title: "اپل واچ سری ۹",
-    model: "Aluminum 45mm",
+    model: "Aluminum 45mm - GPS",
     price: "۱۸,۲۰۰,۰۰۰",
+    rate: 4.9,
     image: "/placeholder.png",
     isNew: false,
   },
   {
     id: 3,
     title: "سامسونگ گلکسی S24",
-    model: "Ultra 5G - 256GB",
+    model: "Ultra 5G - 256GB Storage",
     price: "۶۵,۰۰۰,۰۰۰",
+    rate: 4.7,
     image: "/placeholder.png",
     isNew: true,
   },
   {
     id: 4,
     title: "ایرپاد پرو ۲",
-    model: "Type-C Charging",
+    model: "Type-C Charging Case",
     price: "۹,۸۰۰,۰۰۰",
+    rate: 4.6,
     image: "/placeholder.png",
     isNew: false,
   },
   {
     id: 5,
-    title: "کنسول پلی‌استیشن ۵",
-    model: "Standard Edition",
-    price: "۲۸,۵۰۰,۰۰۰",
-    image: "/placeholder.png",
-    isNew: false,
-  },
-  {
-    id: 6,
-    title: "مک‌بوک ایر M2",
-    model: "256GB - Midnight",
-    price: "۵۴,۰۰۰,۰۰۰",
+    title: "پلی‌استیشن ۵ اسلیم",
+    model: "Digital Edition - 1TB",
+    price: "۲۶,۵۰۰,۰۰۰",
+    rate: 5.0,
     image: "/placeholder.png",
     isNew: true,
   },
@@ -62,68 +58,56 @@ export const PopularProducts = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // --- هندل کردن درگ با موس (Drag to Scroll) ---
+  // --- Drag Logic ---
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!sliderRef.current) return;
     setIsDragging(true);
     setStartX(e.pageX - sliderRef.current.offsetLeft);
     setScrollLeft(sliderRef.current.scrollLeft);
   };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
+  const handleMouseLeave = () => setIsDragging(false);
+  const handleMouseUp = () => setIsDragging(false);
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !sliderRef.current) return;
     e.preventDefault();
     const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // سرعت اسکرول
+    const walk = (x - startX) * 1.5;
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
   return (
-    <section className="w-full py-16 bg-white relative overflow-hidden select-none">
-      <div className="container mx-auto px-4">
+    <section className="w-full py-20 bg-[#FDFDFD] relative overflow-hidden select-none">
+      <div className="container mx-auto px-4 lg:px-8">
         
-        {/* --- هدر بخش --- */}
-        <div className="flex items-end justify-between mb-10">
-          
-          {/* تایتل */}
-          <div className="flex flex-col items-start">
-            <span className="text-yellow-500 font-bold text-xs tracking-wider mb-2 uppercase">
-              پیشنهادات ویژه
-            </span>
-            
-            <div className="relative">
-              {/* سایز فونت ثابت دسکتاپ */}
-              <h2 className="text-4xl font-black text-slate-900 pb-4">
-                محبوب‌تـرین‌ها
-              </h2>
-              <span className="absolute bottom-1 right-0 w-2/3 h-1.5 bg-yellow-500 rounded-full"></span>
-              <span className="absolute bottom-1 right-[70%] w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+        {/* --- Header --- */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-6">
+            <div className="flex items-start gap-4">
+                {/* نوار عمودی زرد */}
+                <div className="w-1.5 h-16 bg-[#FFD700] rounded-full mt-1 shadow-[0_0_15px_rgba(255,215,0,0.4)]"></div>
+                
+                <div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="px-3 py-1 rounded-full bg-[#FFD700]/10 text-[#bfa200] text-xs font-bold border border-[#FFD700]/20">
+                            محصولات منتخب هفته
+                        </span>
+                    </div>
+                    {/* تیتر اصلی: خاکستری متوسط (Gray-600) */}
+                    <h2 className="text-3xl lg:text-4xl font-black text-gray-600 tracking-tight">
+                        محبوب‌ترین‌ها
+                    </h2>
+                </div>
             </div>
-          </div>
 
-          {/* دکمه مشاهده همه (مینیمال) */}
-          <Link 
-            href="/products" 
-            className="group flex items-center gap-2 pl-1 py-1"
-          >
-            <span className="text-sm font-bold text-slate-500 group-hover:text-slate-900 transition-colors">
+            {/* دکمه مشاهده همه */}
+            <Link href="/products" className="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-2 group">
                 مشاهده همه
-            </span>
-            <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center group-hover:bg-yellow-500 group-hover:text-white transition-all duration-300">
-                <ChevronLeft size={14} />
-            </div>
-          </Link>
+                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-[#FFD700] group-hover:text-white transition-all duration-300">
+                     <ArrowLeft size={16} />
+                </div>
+            </Link>
         </div>
 
-        {/* --- اسلایدر محصولات --- */}
+        {/* --- Slider --- */}
         <div 
             ref={sliderRef}
             onMouseDown={handleMouseDown}
@@ -131,77 +115,69 @@ export const PopularProducts = () => {
             onMouseUp={handleMouseUp}
             onMouseMove={handleMouseMove}
             className={`
-              flex gap-8 overflow-x-auto pb-10 -mx-4 px-4 
-              scrollbar-hide cursor-grab active:cursor-grabbing
+              flex gap-6 overflow-x-auto pb-16 -mx-4 px-4 lg:mx-0 lg:px-0
+              scrollbar-hide cursor-grab active:cursor-grabbing pt-2
             `}
-            style={{ 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none',
-              scrollBehavior: isDragging ? 'auto' : 'smooth' 
-            }}
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {PRODUCTS.map((product) => (
-            <div 
-                key={product.id} 
-                // عرض ثابت برای دسکتاپ
-                className="flex-shrink-0 w-[290px]"
-            >
+            <div key={product.id} className="flex-shrink-0 w-[280px]">
               <Link 
                 href={`/products/${product.id}`}
                 draggable={false}
-                className="group block relative h-full"
+                className="group block bg-white rounded-[24px] p-3 border border-gray-100 transition-all duration-500 hover:shadow-2xl hover:shadow-gray-200 hover:-translate-y-1 relative h-full"
               >
-                <div className="relative w-full aspect-[4/5] bg-slate-50 rounded-3xl overflow-hidden mb-4 border border-slate-100 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-slate-200/60">
-                    
+                {/* Image Area */}
+                <div className="relative w-full aspect-square bg-gray-50 rounded-2xl overflow-hidden mb-4">
+                    {/* New Badge */}
                     {product.isNew && (
-                        <span className="absolute top-4 right-4 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full z-10">
+                        <span className="absolute top-3 right-3 bg-[#FFD700] text-white text-[10px] font-black px-3 py-1 rounded-full z-10 shadow-sm">
                             NEW
                         </span>
                     )}
-
-                    <div className="absolute top-4 left-4 z-20">
-                      <button 
-                          className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:text-red-500 cursor-pointer active:scale-90"
-                      >
-                          <Heart size={14} />
-                      </button>
-                    </div>
-
-                    <div className="w-full h-full flex items-center justify-center p-6">
-                        <div className="w-full h-full bg-slate-200/50 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                            <ShoppingBag className="text-slate-300 w-12 h-12" />
-                        </div>
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-white via-white/90 to-transparent z-20">
-                        <button 
-                            className="w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg hover:bg-yellow-500 hover:text-slate-900 transition-colors flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-                        >
-                            افزودن به سبد
-                        </button>
+                    
+                    <div className="w-full h-full flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                         <ShoppingBag className="text-gray-300 w-24 h-24" />
                     </div>
                 </div>
 
-                <div className="text-right px-1 select-text">
-                    <h3 className="text-slate-800 font-bold text-lg leading-tight mb-1 group-hover:text-yellow-600 transition-colors">
+                {/* Content */}
+                <div className="px-2 pb-2">
+                    <div className="flex items-center gap-1 mb-2">
+                        <Star size={12} className="fill-[#FFD700] text-[#FFD700]" />
+                        <span className="text-xs font-bold text-gray-400">{product.rate}</span>
+                    </div>
+
+                    {/* Title: خاکستری متوسط (Gray-600) که در هاور کمی تیره میشود (Gray-800) اما سیاه نه */}
+                    <h3 className="text-gray-600 font-bold text-base leading-snug mb-1 line-clamp-1 group-hover:text-gray-800 transition-colors">
                         {product.title}
                     </h3>
-                    <p className="text-slate-400 text-xs font-medium mb-3">
+                    <p className="text-gray-400 text-xs mb-4 line-clamp-1">
                         {product.model}
                     </p>
-                    <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+
+                    {/* Price Area */}
+                    <div className="flex items-center justify-between mt-4 border-t border-dashed border-gray-100 pt-3">
                         <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400">قیمت:</span>
-                            <span className="text-slate-900 font-black text-base">
-                                {product.price} <span className="text-[10px] font-normal text-slate-500">تومان</span>
-                            </span>
+                            <span className="text-[10px] text-gray-400 font-medium">قیمت نهایی:</span>
+                            <div className="flex items-center gap-1">
+                                {/* Price: خاکستری تیره نرم (Gray-700) */}
+                                <span className="text-gray-700 font-black text-lg">
+                                    {product.price}
+                                </span>
+                                <span className="text-[10px] text-gray-400 font-bold">تومان</span>
+                            </div>
                         </div>
+
+                        {/* Add Button: خاکستری تیره نرم (Gray-700) */}
+                        <button className="w-10 h-10 rounded-xl bg-gray-700 text-white flex items-center justify-center group-hover:bg-[#FFD700] group-hover:text-white transition-all duration-300 shadow-lg shadow-gray-200">
+                            <ShoppingBag size={18} />
+                        </button>
                     </div>
                 </div>
               </Link>
             </div>
           ))}
-          
         </div>
       </div>
     </section>
