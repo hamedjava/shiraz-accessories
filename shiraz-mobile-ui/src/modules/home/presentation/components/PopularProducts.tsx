@@ -100,7 +100,8 @@ export const PopularProducts = () => {
             </span>
             
             <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 pb-4">
+              {/* سایز فونت ثابت دسکتاپ */}
+              <h2 className="text-4xl font-black text-slate-900 pb-4">
                 محبوب‌تـرین‌ها
               </h2>
               <span className="absolute bottom-1 right-0 w-2/3 h-1.5 bg-yellow-500 rounded-full"></span>
@@ -116,7 +117,6 @@ export const PopularProducts = () => {
             <span className="text-sm font-bold text-slate-500 group-hover:text-slate-900 transition-colors">
                 مشاهده همه
             </span>
-            {/* آیکون مینیمال دایره‌ای */}
             <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center group-hover:bg-yellow-500 group-hover:text-white transition-all duration-300">
                 <ChevronLeft size={14} />
             </div>
@@ -131,7 +131,7 @@ export const PopularProducts = () => {
             onMouseUp={handleMouseUp}
             onMouseMove={handleMouseMove}
             className={`
-              flex gap-6 overflow-x-auto pb-10 -mx-4 px-4 
+              flex gap-8 overflow-x-auto pb-10 -mx-4 px-4 
               scrollbar-hide cursor-grab active:cursor-grabbing
             `}
             style={{ 
@@ -140,11 +140,11 @@ export const PopularProducts = () => {
               scrollBehavior: isDragging ? 'auto' : 'smooth' 
             }}
         >
-          {/* فقط لیست محصولات رندر می‌شود (دکمه اضافه حذف شد) */}
           {PRODUCTS.map((product) => (
             <div 
                 key={product.id} 
-                className="flex-shrink-0 w-[260px] md:w-[280px]"
+                // عرض ثابت برای دسکتاپ
+                className="flex-shrink-0 w-[290px]"
             >
               <Link 
                 href={`/products/${product.id}`}
@@ -161,11 +161,6 @@ export const PopularProducts = () => {
 
                     <div className="absolute top-4 left-4 z-20">
                       <button 
-                          onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              console.log("Like Clicked");
-                          }}
                           className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:text-red-500 cursor-pointer active:scale-90"
                       >
                           <Heart size={14} />
@@ -180,11 +175,6 @@ export const PopularProducts = () => {
 
                     <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-white via-white/90 to-transparent z-20">
                         <button 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                console.log("Add to Cart Clicked");
-                            }}
                             className="w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg hover:bg-yellow-500 hover:text-slate-900 transition-colors flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                         >
                             افزودن به سبد

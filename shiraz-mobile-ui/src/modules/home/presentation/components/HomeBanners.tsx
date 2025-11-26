@@ -10,16 +10,11 @@ export const FeaturesBar = () => {
   ];
 
   return (
-    // اصلاحات انجام شده:
-    // mt-12: فاصله مناسب از محصولات بالا
-    // mb-0: حذف فاصله پایین برای نزدیکی حداکثری به فوتر
-    // pb-8: کمی فاصله داخلی پایین اضافه شد تا اگر فوتر دقیقاً چسبید، ظاهر بدی نداشته باشد
     <div className="container mx-auto px-4 mt-12 mb-0 pb-8">
-      {/* تغییر استایل به حالت کپسولی یکپارچه طبق عکس */}
-      <div className="bg-slate-50 rounded-[2rem] py-8 px-4 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 border border-slate-100 shadow-sm">
+      {/* همیشه افقی (Row) */}
+      <div className="bg-slate-50 rounded-[2rem] py-8 px-12 flex flex-row items-center justify-between gap-4 border border-slate-100 shadow-sm">
         {features.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start group">
-            {/* آیکون سمت راست (در حالت RTL) */}
+          <div key={idx} className="flex items-center gap-4 w-auto justify-start group">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-600 shadow-sm group-hover:text-yellow-500 group-hover:scale-110 transition-all duration-300 border border-slate-100">
               {item.icon}
             </div>
@@ -42,7 +37,8 @@ export const FeaturesBar = () => {
 export const PromoBanners = () => {
   return (
     <div className="container mx-auto px-4 my-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* همیشه ۲ ستونه */}
+      <div className="grid grid-cols-2 gap-6">
         
         {/* بنر اول */}
         <div className="relative h-[260px] rounded-3xl overflow-hidden bg-slate-900 group cursor-pointer">
