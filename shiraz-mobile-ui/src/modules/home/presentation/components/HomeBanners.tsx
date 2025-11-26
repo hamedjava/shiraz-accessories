@@ -2,18 +2,20 @@
 
 import React from "react";
 import Link from "next/link";
+// ایمپورت LucideIcon برای تعریف تایپ صحیح
 import { Truck, ShieldCheck, Headphones, RefreshCw, ArrowLeft, Gamepad2, Smartphone, LucideIcon } from "lucide-react";
 
-// تعریف اینترفیس برای تایپ‌اسکریپت (برای جلوگیری از ارورهای احتمالی آینده)
+// --- تعریف اینترفیس برای تایپ‌اسکریپت ---
+// این بخش تضمین می‌کند که item.Icon حتماً یک کامپوننت آیکون است که size را می‌پذیرد
 interface FeatureItem {
-  Icon: LucideIcon; // ذخیره خودِ کامپوننت آیکون
+  Icon: LucideIcon; 
   title: string;
   desc: string;
 }
 
-// --- کامپوننت نوار ویژگی‌ها (اصلاح شده و بدون ارور) ---
+// --- کامپوننت نوار ویژگی‌ها (اصلاح شده) ---
 export const FeaturesBar = () => {
-  // توجه: در اینجا خود نام آیکون را بدون < > پاس می‌دهیم
+  // تغییر مهم: پاس دادن رفرنس کامپوننت (بدون < >)
   const features: FeatureItem[] = [
     { Icon: RefreshCw, title: "۷ روز ضمانت بازگشت", desc: "در صورت عدم رضایت" },
     { Icon: Headphones, title: "پشتیبانی ۲۴/۷", desc: "پاسخگویی در تمام ساعات" },
@@ -28,7 +30,7 @@ export const FeaturesBar = () => {
           {features.map((item, idx) => (
             <div key={idx} className="flex flex-col items-center text-center sm:flex-row sm:text-right sm:items-start gap-4 group cursor-default">
               <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 transition-all duration-500 group-hover:bg-[#FFD700] group-hover:text-white group-hover:rotate-6 shadow-sm">
-                {/* حالا آیکون را به صورت کامپوننت رندر می‌کنیم */}
+                {/* رندر کردن کامپوننت آیکون به صورت مستقیم */}
                 <item.Icon size={24} strokeWidth={1.5} />
               </div>
               
@@ -89,7 +91,6 @@ export const PromoBanners = () => {
                 <Gamepad2 size={140} className="text-gray-300 drop-shadow-xl" strokeWidth={1} />
             </div>
           </Link>
-
 
           {/* --- بنر دوم: لوازم جانبی --- */}
           <Link 

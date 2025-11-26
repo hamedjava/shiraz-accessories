@@ -1,115 +1,89 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Play, Star, Zap } from "lucide-react";
+// import Image from "next/image"; // نیازی نیست چون از تگ img استفاده می‌کنیم
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center bg-white overflow-hidden selection:bg-yellow-500 selection:text-white">
+    <section className="relative w-full min-h-[85vh] flex items-center bg-slate-50 overflow-hidden font-[family-name:var(--font-iranyekan)]">
       
-      {/* --- Background Elements --- */}
-      <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-yellow-500/20 rounded-full blur-[120px] opacity-60 animate-pulse duration-[5000ms]" />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-slate-200 rounded-full blur-[100px] opacity-80" />
+      {/* 1. BACKGROUND EFFECTS */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#FFD700]/10 rounded-full blur-[120px] pointer-events-none" />
       
-      <div className="container mx-auto px-4 relative z-10">
-        {/* اجبار به حالت افقی flex-row */}
-        <div className="flex flex-row items-center justify-between gap-20">
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-0">
 
-          {/* Typography Side */}
-          <div className="w-1/2 flex flex-col items-start text-right z-20">
+          {/* --- LEFT: TEXT CONTENT --- */}
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-right z-20 mt-8 lg:mt-0">
             
-            <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-yellow-50 border border-yellow-100/60">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-8">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFD700] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFD700]"></span>
               </span>
-              <span className="text-[11px] font-bold text-yellow-700/90 tracking-wider uppercase">
-                NEW COLLECTION
-              </span>
+              <span className="text-xs font-bold text-slate-600 tracking-wide">پیش‌فروش ویژه آغاز شد</span>
             </div>
 
-            <h1 className="text-7xl font-black text-slate-900 leading-[1.15] tracking-tight mb-6">
-              تجربه صدای <br />
-              <span className="text-yellow-500 relative inline-block">
-                 شفاف و بی‌نهایت
-                 <span className="absolute bottom-2 right-0 w-full h-3 bg-yellow-200/30 -z-10 -skew-x-12 rounded-sm"></span>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight mb-6">
+              آیفون ۱۷ پرو <br />
+              <span className="relative inline-block text-[#FFD700]">
+                فراتر از واقعیت
+                <svg className="absolute w-[110%] h-4 -bottom-2 -right-2 text-slate-900/5 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" />
+                </svg>
               </span>
             </h1>
 
-            <p className="text-lg text-slate-500 font-medium leading-8 max-w-[520px] mb-8">
-              با جدیدترین تکنولوژی حذف نویز، سکوت را لمس کنید. طراحی ارگونومیک برای استفاده طولانی مدت بدون خستگی.
+            <p className="text-lg text-slate-600 font-medium leading-8 max-w-[500px] mb-10">
+              طراحی تیتانیومی جدید، پردازنده A18 Bionic و دوربینی که قوانین فیزیک را به چالش می‌کشد. هم‌اکنون در موبایل شیراز.
             </p>
 
-            <div className="flex items-center gap-8 mb-10 w-full">
-              <Link 
-                href="/products" 
-                className="h-14 px-8 rounded-2xl bg-slate-900 text-white font-bold text-lg flex items-center justify-center gap-3 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200/50 active:scale-95"
-              >
-                خرید محصول
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center lg:justify-start">
+              <Link href="/products" className="w-full sm:w-auto h-14 px-8 rounded-xl bg-[#FFD700] text-slate-900 font-bold text-lg flex items-center justify-center gap-2 transition-all hover:bg-[#e6c200] hover:shadow-lg hover:-translate-y-1">
+                پیش‌خرید کنید
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               
-              <div className="flex items-center gap-4 cursor-pointer group">
-                 <div className="relative w-16 h-16 rounded-2xl bg-slate-200 overflow-hidden shadow-sm border border-slate-100">
-                    <div className="absolute inset-0 bg-slate-300 group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <Play className="w-3 h-3 fill-slate-900 text-slate-900 ml-0.5" />
-                        </div>
-                    </div>
-                 </div>
-                 <div className="flex flex-col text-right">
-                    <span className="text-sm font-black text-slate-800 group-hover:text-yellow-600 transition-colors">
-                        بررسی ویدئویی
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-medium mt-0.5">
-                        مشاهده عملکرد (۰۲:۱۵)
-                    </span>
-                 </div>
+              <div className="mt-4 sm:mt-0 sm:mr-6 flex items-center gap-4 text-sm font-bold text-slate-500">
+                <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-[#FFD700]" />
+                    <span>۱۸ ماه گارانتی</span>
+                </div>
               </div>
-            </div>
-
-            <div className="w-full border-t border-slate-100 pt-6 flex items-center justify-start gap-8">
-                <div className="flex flex-col items-start gap-1">
-                    <div className="flex text-yellow-400 space-x-0.5 space-x-reverse">
-                         {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
-                    </div>
-                    <span className="text-xs text-slate-400 font-bold mt-1 pr-1">۴.۹ از ۵ (۲۰۰+ نظر)</span>
-                </div>
-                <div className="w-px h-10 bg-slate-200 mx-2"></div>
-                <div className="flex flex-col items-start">
-                    <span className="text-2xl font-black text-slate-800 tabular-nums">+10k</span>
-                    <span className="text-xs text-slate-400 font-medium">مشتری فعال</span>
-                </div>
-                <div className="w-px h-10 bg-slate-200 mx-2"></div>
-                <div className="flex flex-col items-start pl-2">
-                    <span className="text-2xl font-black text-slate-800 tabular-nums">+۱۵</span>
-                    <span className="text-xs text-slate-400 font-medium">سال گارانتی</span>
-                </div>
             </div>
           </div>
 
-          {/* Image Side */}
-          <div className="w-1/2 relative">
-             <div className="relative z-10 w-full aspect-square max-w-[550px] mx-auto">
-                <div className="absolute inset-4 border border-dashed border-slate-300 rounded-full animate-[spin_10s_linear_infinite]" />
-                <div className="w-full h-full relative flex items-center justify-center">
-                    <div className="relative w-[80%] h-[80%] bg-gradient-to-br from-slate-100 to-slate-200 rounded-[3rem] shadow-2xl shadow-slate-200/50 flex items-center justify-center transform hover:-rotate-3 transition-transform duration-500 cursor-pointer group">
-                        <div className="text-center opacity-40 group-hover:opacity-60 transition-opacity">
-                            <span className="text-8xl filter drop-shadow-xl block mb-4">🎧</span>
-                            <p className="font-bold text-slate-500 tracking-widest uppercase text-sm">Product Shot</p>
-                        </div>
-                        <div className="absolute -top-6 -right-6 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-white flex items-center gap-3 animate-bounce duration-[3000ms]">
-                            <div className="bg-yellow-500 p-2 rounded-xl text-black">
-                                <Zap size={20} fill="currentColor" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] text-slate-500 font-bold">فروش ویژه</p>
-                                <p className="text-sm font-black text-slate-900">۲۰٪ تخفیف</p>
-                            </div>
-                        </div>
+          {/* --- RIGHT: VISUALS --- */}
+          <div className="w-full lg:w-1/2 relative flex justify-center items-center h-[500px]">
+             
+             {/* دایره‌های متحرک پس‌زمینه */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] border border-slate-200 rounded-full animate-[spin_20s_linear_infinite]"></div>
+
+             <div className="relative z-10 w-full max-w-[400px] aspect-square flex items-center justify-center">
+                
+                {/* ✅ استفاده از تگ img استاندارد HTML */}
+                <div className="relative w-[320px] h-[420px] drop-shadow-2xl transition-transform duration-500 hover:scale-105">
+                    <img
+                        src="/images/products/iphone17mainPic.png" 
+                        alt="iPhone 17 Pro Max"
+                        className="w-full h-full object-contain"
+                    />
+                </div>
+
+                {/* بج شناور */}
+                <div className="absolute -right-4 top-20 bg-white/90 backdrop-blur-xl p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-3 animate-bounce duration-[3000ms]">
+                    <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-[#FFD700]">
+                        <span className="font-bold text-[10px]">NEW</span>
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-slate-400 font-bold">مدل جدید</p>
+                        <p className="text-xs font-black text-slate-800">Titanium Blue</p>
                     </div>
                 </div>
+
              </div>
           </div>
 

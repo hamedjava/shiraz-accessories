@@ -7,10 +7,6 @@
     "[project]/shiraz-mobile-ui/src/app/page": [
       "static/media/yekan_normal-s.p.3134a2f5.ttf",
       "static/media/yekan_bold-s.p.219984cb.ttf"
-    ],
-    "[project]/shiraz-mobile-ui/src/app/products/[id]/page": [
-      "static/media/yekan_normal-s.p.3134a2f5.ttf",
-      "static/media/yekan_bold-s.p.219984cb.ttf"
     ]
   },
   "appUsingSizeAdjust": true,

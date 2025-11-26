@@ -1,17 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import { Logo } from "@/core/components/ui/Logo";
 import { Instagram, Send, Phone, MapPin, Mail } from "lucide-react";
 
 export const Footer = () => {
   return (
     <footer className="bg-brand-dark text-gray-300 mt-20 border-t border-gray-800">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        {/* گرید همیشه ۴ ستونه */}
+        <div className="grid grid-cols-4 gap-12">
           
-          {/* ستون اول: درباره ما */}
+          {/* ستون اول */}
           <div className="space-y-6">
-            {/* لوگوی سفارشی برای فوتر با رنگ روشن */}
             <div className="flex items-center gap-2 select-none">
                 <div className="w-8 h-8 bg-brand-yellow rounded-lg flex items-center justify-center rotate-3">
                     <span className="font-black text-brand-dark text-lg">S</span>
@@ -23,7 +22,6 @@ export const Footer = () => {
                     </span>
                 </div>
             </div>
-            
             <p className="text-sm leading-relaxed text-gray-400">
               مرجع تخصصی لوازم جانبی موبایل در شیراز. ارائه دهنده بهترین کیفیت با ضمانت اصالت کالا و ارسال سریع به سراسر کشور.
             </p>
@@ -37,7 +35,7 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* ستون دوم: دسترسی سریع */}
+          {/* ستون دوم */}
           <div>
             <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
               دسترسی سریع
@@ -52,7 +50,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* ستون سوم: محصولات */}
+          {/* ستون سوم */}
           <div>
             <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
               دسته‌بندی‌ها
@@ -67,7 +65,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* ستون چهارم: تماس */}
+          {/* ستون چهارم */}
           <div>
             <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
               تماس با ما
@@ -92,7 +90,6 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* کپی رایت */}
       <div className="bg-black/30 py-4 border-t border-white/5">
         <div className="container mx-auto px-4 text-center text-xs text-gray-500">
           © ۱۴۰۳ تمامی حقوق برای شیراز موبایل محفوظ است. طراحی شده با ❤️
